@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* ==============================
+   TEMA BASE — Generador de Releases
+   ============================== */
+
+@theme {
+  --color-bg-primary: #1a1a2e;
+  --color-bg-surface: #16213e;
+  --color-bg-canvas: #2d4a3e;
+  --color-primary: #0f3460;
+  --color-primary-light: #1a5276;
+  --color-accent: #e94560;
+  --color-accent-hover: #ff6b81;
+  --color-text: #eaeaea;
+  --color-text-muted: #a0a0b0;
+  --color-success: #2ecc71;
+  --color-warning: #f39c12;
+  --color-error: #e74c3c;
+  --color-edge-red: #e74c3c;
+  --color-edge-yellow: #f1c40f;
+  --color-edge-purple: #9b59b6;
+  --color-sidebar: #00b4d8;
+  --color-node: #1e3a5f;
+}
+
+/* ==============================
+   BASE STYLES
+   ============================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+}
