@@ -178,20 +178,20 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-[#091b2c]/95 backdrop-blur-2xl border-l border-cyan-400/40 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 select-none">
-      {/* Header — basado en Diapositiva 9 */}
-      <div className="px-6 py-4 fa-glass-header-orange flex justify-between items-center text-white shadow-md">
+    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-2xl bg-[#091b2c]/95 backdrop-blur-2xl border-l border-cyan-400/40 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 select-none">
+      {/* Header Frutiger Aero con padding amplio */}
+      <div className="px-8 py-5 fa-glass-header-orange flex justify-between items-center text-white shadow-md shrink-0">
         <div>
-          <div className="flex items-center gap-2 font-bold text-lg fa-text-shadow">
+          <div className="flex items-center gap-3 font-extrabold text-xl fa-text-shadow">
             <span>&gt;_ Consola: {connection.label}</span>
           </div>
-          <p className="text-xs font-mono text-orange-100 mt-0.5 truncate max-w-md">
+          <p className="text-xs font-mono text-orange-100 mt-1 truncate max-w-lg">
             {repository.name} ({repository.folderPath})
           </p>
         </div>
         <button
           onClick={onClose}
-          className="text-white hover:text-orange-200 text-2xl font-bold cursor-pointer transition-colors"
+          className="text-white hover:text-orange-200 text-2xl font-bold cursor-pointer transition-colors p-1"
           title="Cerrar consola"
         >
           ✕
@@ -199,18 +199,18 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
       </div>
 
       {/* Main Content: Split Editor and Console */}
-      <div className="flex-1 flex flex-col p-4 space-y-4 overflow-y-auto">
+      <div className="flex-1 flex flex-col p-6 space-y-6 overflow-y-auto">
         {/* Editor section */}
-        <div className="flex flex-col bg-black/40 rounded-2xl border border-cyan-500/30 p-4 shadow-xl">
-          <div className="flex justify-between items-center mb-2">
+        <div className="flex flex-col bg-black/40 rounded-2xl border border-cyan-500/30 p-5 shadow-xl space-y-3">
+          <div className="flex justify-between items-center">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-200 fa-text-shadow">
               Secuencia de Comandos (Pseudocódigo / Git)
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {isSaved && <span className="text-xs text-emerald-400 font-bold animate-pulse">¡Guardado!</span>}
               <button
                 onClick={handleSaveScript}
-                className="px-3 py-1.5 fa-btn-cyan text-xs rounded-xl font-bold transition-all cursor-pointer"
+                className="fa-btn-cyan text-xs rounded-xl font-bold transition-all cursor-pointer"
               >
                 Guardar Script
               </button>
@@ -219,19 +219,19 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
           <textarea
             value={scriptText}
             onChange={e => setScriptText(e.target.value)}
-            rows={7}
-            className="w-full bg-[#05111e]/90 border border-cyan-500/40 rounded-xl p-3 text-cyan-300 font-mono text-xs leading-relaxed focus:outline-none focus:border-cyan-300 resize-y shadow-inner"
+            rows={8}
+            className="w-full bg-[#05111e]/90 border border-cyan-500/40 rounded-xl p-4 text-cyan-300 font-mono text-xs leading-relaxed focus:outline-none focus:border-cyan-300 resize-y shadow-inner"
             placeholder="Ingresa los comandos de Git..."
           />
         </div>
 
         {/* Action controls */}
-        <div className="flex justify-between items-center bg-black/50 p-3 rounded-2xl border border-white/10">
-          <div className="flex gap-2">
+        <div className="flex justify-between items-center bg-black/50 p-4 rounded-2xl border border-white/10">
+          <div className="flex gap-3">
             <button
               onClick={handleExecute}
               disabled={isExecuting}
-              className="px-5 py-2.5 fa-btn-green disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
+              className="fa-btn-green disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2.5 cursor-pointer"
             >
               {isExecuting ? (
                 <>
@@ -247,45 +247,45 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
 
           <button
             onClick={() => setLogs([])}
-            className="px-3.5 py-1.5 fa-btn-glass text-xs rounded-xl transition-colors cursor-pointer"
+            className="fa-btn-glass text-xs rounded-xl transition-colors cursor-pointer"
           >
             ⟳ Limpiar Consola
           </button>
         </div>
 
-        {/* Execution Error alert box (Diapositiva 9 requirement) */}
+        {/* Execution Error alert box */}
         {executionError && (
-          <div className="p-4 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded-xl shadow-lg animate-pulse">
-            <div className="font-bold text-sm mb-1 flex items-center gap-2">
+          <div className="p-5 bg-red-950/90 border border-red-500 text-red-200 text-xs rounded-2xl shadow-xl animate-pulse space-y-1.5">
+            <div className="font-bold text-sm flex items-center gap-2">
               <span>⚠️ EJECUCIÓN PAUSADA — INTERVENCIÓN REQUERIDA</span>
             </div>
             <p className="font-mono">{executionError}</p>
-            <p className="mt-2 text-[11px] opacity-80">
+            <p className="text-[11px] opacity-80 pt-1">
               Revisa los logs abajo para identificar en qué paso falló. Puedes corregir el script o el repositorio y volver a pulsar "Ejecutar Comandos".
             </p>
           </div>
         )}
 
-        {/* Live Terminal Output Console (Diapositiva 9) */}
-        <div className="flex-1 min-h-[220px] bg-[#0c0a09] border border-stone-800 rounded-xl p-4 font-mono text-xs overflow-y-auto shadow-inner space-y-1">
-          <div className="text-stone-500 text-[11px] pb-2 border-b border-stone-800 mb-2">
+        {/* Live Terminal Output Console */}
+        <div className="flex-1 min-h-[260px] bg-[#050c14] border border-cyan-500/30 rounded-2xl p-5 font-mono text-xs overflow-y-auto shadow-inner space-y-2">
+          <div className="text-cyan-400/60 text-[11px] pb-2 border-b border-cyan-500/20 mb-3 font-bold tracking-wider">
             --- CONSOLA DE SALIDA ---
           </div>
 
           {logs.length === 0 ? (
-            <div className="text-stone-600 italic">Pulsa "Ejecutar Comandos" para ver la salida en tiempo real...</div>
+            <div className="text-stone-500 italic p-2">Pulsa "Ejecutar Comandos" para ver la salida en tiempo real...</div>
           ) : (
             logs.map((log, index) => {
               let colorClass = 'text-stone-300'
-              if (log.type === 'info') colorClass = 'text-cyan-400 font-semibold'
+              if (log.type === 'info') colorClass = 'text-cyan-300 font-semibold'
               if (log.type === 'stdout') colorClass = 'text-emerald-300'
-              if (log.type === 'stderr') colorClass = 'text-amber-400'
-              if (log.type === 'success') colorClass = 'text-green-400 font-bold'
-              if (log.type === 'error') colorClass = 'text-red-400 font-bold bg-red-950/40 p-1 rounded border border-red-800'
+              if (log.type === 'stderr') colorClass = 'text-amber-300'
+              if (log.type === 'success') colorClass = 'text-green-300 font-bold'
+              if (log.type === 'error') colorClass = 'text-red-400 font-bold bg-red-950/40 p-2 rounded-xl border border-red-800'
 
               return (
-                <div key={index} className={`leading-relaxed ${colorClass}`}>
-                  <span className="text-[10px] text-stone-600 mr-2 select-none">[{log.timestamp}]</span>
+                <div key={index} className={`leading-relaxed py-0.5 ${colorClass}`}>
+                  <span className="text-[10px] text-cyan-500/60 mr-3 select-none">[{log.timestamp}]</span>
                   <span>{log.message}</span>
                 </div>
               )

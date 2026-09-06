@@ -76,14 +76,14 @@ export const BranchEdge = memo(({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: 'all',
           }}
-          className="group flex items-center gap-1.5 fa-btn-cyan px-3 py-1.5 rounded-full shadow-2xl text-white text-xs font-bold select-none border border-white/40 cursor-pointer"
+          className="group flex items-center gap-2.5 fa-btn-cyan px-4 py-2 rounded-full shadow-2xl text-white text-xs font-bold select-none border border-white/40 cursor-pointer"
         >
-          {/* Label text */}
-          <span className="truncate max-w-[140px] fa-text-shadow" title={data?.label}>
+          {/* Label text con espacio amplio */}
+          <span className="truncate max-w-[160px] fa-text-shadow tracking-wide font-sans" title={data?.label}>
             {data?.label}
           </span>
 
-          {/* Terminal / Console Icon Button */}
+          {/* Terminal / Console Icon Button holgado */}
           <button
             onClick={e => {
               e.stopPropagation()
@@ -91,7 +91,7 @@ export const BranchEdge = memo(({
                 data.onOpenConsole(data.connectionId)
               }
             }}
-            className="w-5 h-5 rounded-md bg-black/40 hover:bg-black/70 border border-cyan-300/50 flex items-center justify-center text-[10px] font-mono font-bold text-cyan-300 hover:text-white transition-colors cursor-pointer shrink-0 shadow-inner"
+            className="w-6 h-6 rounded-lg bg-black/40 hover:bg-black/70 border border-white/40 flex items-center justify-center text-[11px] font-mono font-bold text-cyan-200 hover:text-white transition-colors cursor-pointer shrink-0 shadow-inner"
             title="Abrir editor de comandos y consola"
           >
             &gt;_
@@ -106,7 +106,7 @@ export const BranchEdge = memo(({
                   data?.onDeleteEdge?.(data.connectionId)
                 }
               }}
-              className="w-4.5 h-4.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-[10px] hidden group-hover:flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-0.5 border border-white/50"
+              className="w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 text-white text-[10px] hidden group-hover:flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-0.5 border border-white/50"
               title="Eliminar conexión"
             >
               ✕

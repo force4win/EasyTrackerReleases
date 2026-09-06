@@ -65,29 +65,29 @@ export function RepositoriesPage() {
       <div className="fa-lens-flare" />
 
       {/* Sidebar Frutiger Aero — Cristal & Resplandores */}
-      <aside className="w-72 bg-[#0c2540]/80 backdrop-blur-xl border-r border-cyan-400/30 flex flex-col p-4 shrink-0 shadow-2xl z-10">
-        {/* Banner de título del Sidebar */}
-        <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-gradient-to-r from-cyan-500/30 to-blue-600/30 border border-cyan-300/40 shadow-inner">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🗂️</span>
-            <h2 className="text-base font-bold text-white tracking-wide fa-text-shadow">
+      <aside className="w-80 bg-[#0c2540]/85 backdrop-blur-xl border-r border-cyan-400/30 flex flex-col p-5 shrink-0 shadow-2xl z-10">
+        {/* Banner de título del Sidebar con espacio holgado */}
+        <div className="flex items-center justify-between mb-6 p-4 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-blue-600/30 border border-cyan-300/40 shadow-inner">
+          <div className="flex items-center gap-2.5">
+            <span className="text-2xl">🗂️</span>
+            <h2 className="text-base font-extrabold text-white tracking-wide fa-text-shadow">
               Repositorios
             </h2>
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="w-8 h-8 rounded-full fa-btn-cyan text-white flex items-center justify-center text-lg font-bold shadow-lg cursor-pointer"
+            className="w-9 h-9 rounded-full fa-btn-cyan text-white flex items-center justify-center text-xl font-bold shadow-lg cursor-pointer"
             title="Agregar nuevo repositorio"
           >
             +
           </button>
         </div>
 
-        {/* Lista de repositorios con acabado de cristal y reflejos */}
-        <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+        {/* Lista de repositorios con acabado de cristal y padding espacioso */}
+        <div className="flex-1 overflow-y-auto space-y-3.5 pr-1">
           {repositories.length === 0 ? (
-            <div className="text-cyan-200/70 text-xs text-center mt-8 p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
-              <p className="font-bold text-white text-sm mb-1">Sin Repositorios</p>
+            <div className="text-cyan-200/70 text-xs text-center mt-8 p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+              <p className="font-bold text-white text-sm mb-1.5">Sin Repositorios</p>
               <p className="text-cyan-100/70">Haz clic en el botón <strong className="text-cyan-300">+</strong> arriba para comenzar</p>
             </div>
           ) : (
@@ -97,24 +97,24 @@ export function RepositoriesPage() {
                 <div
                   key={repo.id}
                   onClick={() => setActiveRepositoryId(repo.id)}
-                  className={`group relative p-3.5 rounded-xl cursor-pointer transition-all duration-200 border ${
+                  className={`group relative px-4 py-3.5 rounded-2xl cursor-pointer transition-all duration-200 border ${
                     isActive
-                      ? 'bg-gradient-to-r from-cyan-500/40 to-blue-600/50 border-cyan-300 shadow-lg shadow-cyan-500/20 scale-[1.02]'
+                      ? 'bg-gradient-to-r from-cyan-500/45 to-blue-600/55 border-cyan-300 shadow-xl shadow-cyan-500/25 scale-[1.02]'
                       : 'bg-white/10 hover:bg-white/15 border-white/20 text-slate-100 hover:border-cyan-400/50'
                   }`}
                 >
                   {/* Highlight especular */}
-                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-xl" />
+                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-2xl" />
 
-                  <div className="font-bold text-sm truncate pr-14 text-white fa-text-shadow">
+                  <div className="font-bold text-sm truncate pr-16 text-white fa-text-shadow leading-snug">
                     {repo.name}
                   </div>
-                  <div className="text-[11px] truncate text-cyan-200/80 mt-1 font-mono">
+                  <div className="text-[11px] truncate text-cyan-200/80 mt-1 font-mono leading-tight">
                     {repo.folderPath}
                   </div>
 
                   {/* Acciones flotantes (Editar/Eliminar) */}
-                  <div className="absolute right-2 top-2.5 hidden group-hover:flex items-center gap-1 bg-black/60 p-1 rounded-lg border border-white/20 backdrop-blur-md">
+                  <div className="absolute right-3 top-3.5 hidden group-hover:flex items-center gap-1 bg-black/70 p-1.5 rounded-xl border border-white/20 backdrop-blur-md">
                     <button
                       onClick={e => handleOpenEditModal(repo, e)}
                       className="text-white hover:text-cyan-300 text-xs px-1.5 py-0.5 rounded hover:bg-white/10 transition-colors"
@@ -139,17 +139,17 @@ export function RepositoriesPage() {
 
       {/* Área principal — Canvas de Ramas */}
       <main className="flex-1 bg-[#0b273d]/90 flex flex-col z-10">
-        {/* Header bar Frutiger Aero */}
-        <div className="h-14 fa-glass-header flex items-center justify-between px-6 shrink-0 shadow-md">
+        {/* Header bar Frutiger Aero con padding amplio */}
+        <div className="h-16 fa-glass-header flex items-center justify-between px-8 shrink-0 shadow-md">
           <button
             onClick={() => navigate('/')}
             className="text-cyan-200 hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-xs font-bold uppercase tracking-wider fa-text-shadow"
           >
             ← Volver al Inicio
           </button>
-          
+
           {activeRepo ? (
-            <div className="text-center">
+            <div className="text-center px-4 py-1">
               <span className="text-white font-extrabold text-base tracking-wide fa-text-shadow">
                 {activeRepo.name}
               </span>
@@ -163,7 +163,7 @@ export function RepositoriesPage() {
             </span>
           )}
 
-          <div className="w-28"></div> {/* Balance spacer */}
+          <div className="w-32"></div> {/* Balance spacer */}
         </div>
 
         {/* Canvas de React Flow */}

@@ -78,31 +78,31 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200 select-none">
-      <div className="w-full max-w-md fa-glass-window overflow-hidden flex flex-col border border-cyan-400/50 shadow-2xl">
-        {/* Header Especular Frutiger Aero */}
-        <div className="px-6 py-4 fa-glass-header flex justify-between items-center text-white">
-          <h3 className="text-lg font-bold tracking-wide fa-text-shadow">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-6 animate-in fade-in duration-200 select-none">
+      <div className="w-full max-w-lg fa-glass-window overflow-hidden flex flex-col border border-cyan-400/50 shadow-2xl">
+        {/* Header Especular Frutiger Aero con padding amplio */}
+        <div className="px-8 py-5 fa-glass-header flex justify-between items-center text-white">
+          <h3 className="text-xl font-extrabold tracking-wide fa-text-shadow">
             {initialData ? 'Editar Repositorio' : 'Agregar Repositorio'}
           </h3>
           <button
             onClick={onClose}
-            className="text-cyan-200 hover:text-white text-xl font-bold cursor-pointer transition-colors"
+            className="text-cyan-200 hover:text-white text-2xl font-bold cursor-pointer transition-colors p-1"
           >
             ✕
           </button>
         </div>
 
-        {/* Formulario */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-[#0a1c2e]/90">
+        {/* Formulario con espacio holgado */}
+        <form onSubmit={handleSubmit} className="p-8 space-y-6 bg-[#0a1c2e]/95">
           {error && (
-            <div className="p-3 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded-xl shadow-inner">
+            <div className="p-4 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded-2xl shadow-inner">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
+            <label className="block text-xs font-bold text-cyan-200 mb-2 uppercase tracking-wider fa-text-shadow">
               Nombre del Repositorio
             </label>
             <input
@@ -110,26 +110,26 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Ej. OperationAPI"
-              className="w-full px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-xs focus:outline-none focus:border-cyan-300 shadow-inner"
+              className="w-full px-4 py-3 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-sm focus:outline-none focus:border-cyan-300 shadow-inner"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
+            <label className="block text-xs font-bold text-cyan-200 mb-2 uppercase tracking-wider fa-text-shadow">
               Ruta de la Carpeta (Git)
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <input
                 type="text"
                 value={folderPath}
                 onChange={e => setFolderPath(e.target.value)}
                 placeholder="D:\folder\folderOper"
-                className="flex-1 px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-xs font-mono focus:outline-none focus:border-cyan-300 shadow-inner"
+                className="flex-1 px-4 py-3 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-xs font-mono focus:outline-none focus:border-cyan-300 shadow-inner"
               />
               <button
                 type="button"
                 onClick={handleBrowseFolder}
-                className="px-3.5 py-2.5 fa-btn-cyan text-xs font-bold rounded-xl cursor-pointer shrink-0"
+                className="fa-btn-cyan text-xs font-bold rounded-xl cursor-pointer shrink-0"
               >
                 Examinar...
               </button>
@@ -137,18 +137,18 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
           </div>
 
           {/* Botones Acciones Gelatinosas */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-cyan-500/20">
+          <div className="flex justify-end gap-4 pt-5 border-t border-cyan-500/20">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 fa-btn-glass text-xs font-bold rounded-xl cursor-pointer"
+              className="fa-btn-glass text-xs font-bold rounded-xl cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 fa-btn-green text-xs font-bold rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
+              className="fa-btn-green text-xs font-bold rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? 'Guardando...' : 'Guardar Repositorio'}
             </button>
