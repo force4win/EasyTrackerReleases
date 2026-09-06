@@ -4,75 +4,107 @@ function HomePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-bg-primary)] p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center fa-background relative p-8 select-none">
+      {/* Resplandor de Luz Frutiger Aero */}
+      <div className="fa-lens-flare" />
+
       {/* Header */}
-      <header className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-[var(--color-text)] mb-3 tracking-tight">
-          🚀 Generador de Releases
+      <header className="text-center mb-14 z-10 animate-in fade-in duration-500">
+        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg backdrop-blur-md">
+          <span className="animate-pulse">✨</span> Sistema de Automatización Git & Releases
+        </div>
+        <h1 className="text-5xl md:text-6xl font-extrabold fa-text-glow mb-4 tracking-tight">
+          Generador de Releases
         </h1>
-        <p className="text-lg text-[var(--color-text-muted)]">
-          Gestión visual de transiciones de ramas Git y releases
+        <p className="text-lg text-cyan-100/90 font-medium fa-text-shadow max-w-xl mx-auto leading-relaxed">
+          Gestión visual skeuomórfica de transiciones de ramas Git, ejecución de scripts y entregables
         </p>
       </header>
 
-      {/* Tarjetas principales — basado en Diapositiva 1 */}
-      <main className="flex gap-12 justify-center items-stretch">
+      {/* Tarjetas principales Frutiger Aero Glass Panel */}
+      <main className="flex flex-col sm:flex-row gap-8 justify-center items-stretch z-10 max-w-4xl w-full">
         {/* Tarjeta: Prepare Repositories */}
         <button
           onClick={() => navigate('/repositories')}
-          className="group relative w-80 h-52 rounded-xl overflow-hidden
-                     bg-[var(--color-primary)] border-2 border-[var(--color-primary-light)]
-                     hover:border-[var(--color-accent)] hover:scale-105
-                     transition-all duration-300 ease-out cursor-pointer
-                     shadow-lg hover:shadow-2xl hover:shadow-[var(--color-accent)]/20"
+          className="group flex-1 fa-glass-panel p-8 text-left transition-all duration-300 hover:scale-105 cursor-pointer relative overflow-hidden flex flex-col justify-between min-h-[240px] border border-cyan-300/40 hover:border-cyan-200 shadow-2xl hover:shadow-cyan-500/30"
         >
-          {/* Decoración lateral izquierda */}
-          <div className="absolute left-0 top-0 bottom-0 w-2 bg-[var(--color-sidebar)] 
-                          group-hover:w-3 transition-all duration-300" />
-          {/* Decoración lateral derecha */}
-          <div className="absolute right-0 top-0 bottom-0 w-2 bg-[var(--color-sidebar)]
-                          group-hover:w-3 transition-all duration-300" />
+          {/* Specular split highlight superior */}
+          <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none rounded-t-2xl" />
           
-          <div className="flex flex-col items-center justify-center h-full px-6">
-            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-              🗂️
+          <div className="flex items-start justify-between relative z-10">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 p-0.5 shadow-lg group-hover:shadow-cyan-400/50 transition-shadow">
+              <div className="w-full h-full bg-[#0a2540]/80 rounded-[14px] flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                🗂️
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-500/30">
+              PASO 1
             </span>
-            <span className="text-2xl font-semibold text-white text-center leading-tight">
-              Prepare<br />Repositories
+          </div>
+
+          <div className="relative z-10 mt-6">
+            <h2 className="text-2xl font-bold text-white mb-2 fa-text-shadow group-hover:text-cyan-200 transition-colors">
+              Prepare Repositories
+            </h2>
+            <p className="text-xs text-cyan-100/80 leading-relaxed font-sans">
+              Configura tus repositorios locales, selecciona carpetas y gestiona ramas origen y destino.
+            </p>
+          </div>
+
+          {/* Botón Gelatinoso interno */}
+          <div className="mt-6 pt-4 border-t border-cyan-500/20 flex items-center justify-between relative z-10">
+            <span className="text-xs font-bold text-cyan-200 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Configurar Repositorios →
             </span>
+            <div className="w-8 h-8 rounded-full fa-btn-cyan flex items-center justify-center text-sm font-bold shadow-md">
+              ›
+            </div>
           </div>
         </button>
 
         {/* Tarjeta: Prepare Release */}
         <button
           onClick={() => navigate('/releases')}
-          className="group relative w-80 h-52 rounded-xl overflow-hidden
-                     bg-[var(--color-primary)] border-2 border-[var(--color-primary-light)]
-                     hover:border-[var(--color-accent)] hover:scale-105
-                     transition-all duration-300 ease-out cursor-pointer
-                     shadow-lg hover:shadow-2xl hover:shadow-[var(--color-accent)]/20"
+          className="group flex-1 fa-glass-panel p-8 text-left transition-all duration-300 hover:scale-105 cursor-pointer relative overflow-hidden flex flex-col justify-between min-h-[240px] border border-fuchsia-300/40 hover:border-fuchsia-200 shadow-2xl hover:shadow-fuchsia-500/30"
         >
-          {/* Decoración lateral izquierda */}
-          <div className="absolute left-0 top-0 bottom-0 w-2 bg-[var(--color-sidebar)]
-                          group-hover:w-3 transition-all duration-300" />
-          {/* Decoración lateral derecha */}
-          <div className="absolute right-0 top-0 bottom-0 w-2 bg-[var(--color-sidebar)]
-                          group-hover:w-3 transition-all duration-300" />
-          
-          <div className="flex flex-col items-center justify-center h-full px-6">
-            <span className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-              🚀
+          {/* Specular split highlight superior */}
+          <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none rounded-t-2xl" />
+
+          <div className="flex items-start justify-between relative z-10">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-fuchsia-400 to-purple-700 p-0.5 shadow-lg group-hover:shadow-fuchsia-400/50 transition-shadow">
+              <div className="w-full h-full bg-[#1e0a2b]/80 rounded-[14px] flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                🚀
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold text-fuchsia-300 bg-fuchsia-950/60 px-3 py-1 rounded-full border border-fuchsia-500/30">
+              PASO 2
             </span>
-            <span className="text-2xl font-semibold text-white text-center leading-tight">
-              Prepare<br />Release
+          </div>
+
+          <div className="relative z-10 mt-6">
+            <h2 className="text-2xl font-bold text-white mb-2 fa-text-shadow group-hover:text-fuchsia-200 transition-colors">
+              Prepare Release
+            </h2>
+            <p className="text-xs text-fuchsia-100/80 leading-relaxed font-sans">
+              Crea entregables de release, visualiza el mapa de transiciones y ejecuta scripts en lote.
+            </p>
+          </div>
+
+          {/* Botón Gelatinoso interno */}
+          <div className="mt-6 pt-4 border-t border-fuchsia-500/20 flex items-center justify-between relative z-10">
+            <span className="text-xs font-bold text-fuchsia-200 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Gestor de Releases →
             </span>
+            <div className="w-8 h-8 rounded-full fa-btn-purple flex items-center justify-center text-sm font-bold shadow-md">
+              ›
+            </div>
           </div>
         </button>
       </main>
 
-      {/* Footer */}
-      <footer className="mt-auto pt-8 text-center text-[var(--color-text-muted)] text-sm">
-        <p>v0.1.0 — Misión 2</p>
+      {/* Footer Frutiger Aero */}
+      <footer className="mt-16 text-center text-cyan-200/60 text-xs font-mono z-10 fa-text-shadow">
+        <p>Generador de Releases • Estética Frutiger Aero UI/UX</p>
       </footer>
     </div>
   )

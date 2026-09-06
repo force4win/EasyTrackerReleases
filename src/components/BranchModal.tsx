@@ -77,47 +77,51 @@ export function BranchModal({ isOpen, onClose, folderPath, onSave }: BranchModal
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="w-full max-w-md bg-[var(--color-bg-surface)] border border-[var(--color-primary)] rounded-xl shadow-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-[var(--color-primary)] flex justify-between items-center bg-[var(--color-primary)]/30">
-          <h3 className="text-lg font-semibold text-white">Agregar Rama al Canvas</h3>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-white text-xl cursor-pointer">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in zoom-in-95 duration-200 select-none">
+      <div className="w-full max-w-md fa-glass-window overflow-hidden flex flex-col border border-cyan-400/50 shadow-2xl">
+        {/* Header Especular Frutiger Aero */}
+        <div className="px-6 py-4 fa-glass-header flex justify-between items-center text-white">
+          <h3 className="text-lg font-bold tracking-wide fa-text-shadow">Agregar Rama al Canvas</h3>
+          <button onClick={onClose} className="text-cyan-200 hover:text-white text-xl font-bold cursor-pointer transition-colors">
             ✕
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        {/* Formulario */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-[#0a1c2e]/90">
           {error && (
-            <div className="p-3 bg-[var(--color-error)]/20 border border-[var(--color-error)] text-[var(--color-error)] text-sm rounded-lg">
+            <div className="p-3 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded-xl shadow-inner">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-1">
+            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
               Ramas detectadas en Git
             </label>
             {loadingGit ? (
-              <div className="text-sm text-gray-400 italic">Cargando ramas de Git...</div>
+              <div className="text-xs text-cyan-200/60 italic p-2 bg-black/30 rounded-xl">Cargando ramas de Git...</div>
             ) : gitBranches.length > 0 ? (
               <select
                 value={selectedBranch}
                 onChange={e => setSelectedBranch(e.target.value)}
-                className="w-full px-3 py-2 bg-[var(--color-bg-primary)] border border-[var(--color-primary)] rounded-lg text-white text-sm focus:outline-none focus:border-[var(--color-accent)]"
+                className="w-full px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-300 shadow-inner"
               >
                 {gitBranches.map(b => (
-                  <option key={b} value={b}>
+                  <option key={b} value={b} className="bg-[#0a1c2e] text-white">
                     {b}
                   </option>
                 ))}
               </select>
             ) : (
-              <div className="text-xs text-amber-400">No se detectaron ramas automáticas en el repositorio.</div>
+              <div className="text-xs text-amber-300 bg-amber-950/40 p-2 rounded-xl border border-amber-500/30">
+                No se detectaron ramas automáticas en el repositorio.
+              </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-1">
+            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
               Nombre de Rama personalizado (Opcional)
             </label>
             <input
@@ -125,12 +129,12 @@ export function BranchModal({ isOpen, onClose, folderPath, onSave }: BranchModal
               value={customBranch}
               onChange={e => setCustomBranch(e.target.value)}
               placeholder="Ej. BranchDEV, BranchQA"
-              className="w-full px-3 py-2 bg-[var(--color-bg-primary)] border border-[var(--color-primary)] rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[var(--color-accent)]"
+              className="w-full px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white text-xs placeholder-cyan-200/40 focus:outline-none focus:border-cyan-300 shadow-inner"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-1">
+            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
               Tipo de Entorno / Branch
             </label>
             <div className="grid grid-cols-5 gap-2">
@@ -139,10 +143,10 @@ export function BranchModal({ isOpen, onClose, folderPath, onSave }: BranchModal
                   key={type}
                   type="button"
                   onClick={() => setBranchType(type)}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border ${
+                  className={`py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-md ${
                     branchType === type
-                      ? 'bg-[var(--color-accent)] border-white text-white'
-                      : 'bg-[var(--color-bg-primary)] border-[var(--color-primary)] text-gray-400 hover:text-white'
+                      ? 'fa-btn-cyan border-white'
+                      : 'fa-btn-glass text-cyan-100/70 hover:text-white'
                   }`}
                 >
                   {type}
@@ -151,18 +155,19 @@ export function BranchModal({ isOpen, onClose, folderPath, onSave }: BranchModal
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-[var(--color-primary)]/50">
+          {/* Botones Acciones Gelatinosas */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-cyan-500/20">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-transparent hover:bg-white/5 text-[var(--color-text-muted)] hover:text-white text-sm rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-2 fa-btn-glass text-xs font-bold rounded-xl cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
+              className="px-5 py-2 fa-btn-green text-xs font-bold rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? 'Guardando...' : 'Agregar Nodo'}
             </button>

@@ -210,11 +210,11 @@ export function BranchCanvas({ repository, onOpenConsole }: BranchCanvasProps) {
   }
 
   return (
-    <div className="relative w-full h-full bg-[#2d4a3e]">
-      {/* Botón flotante para agregar rama (Diapositiva 5) */}
+    <div className="relative w-full h-full bg-[#081e30] select-none">
+      {/* Botón flotante Gelatinoso Fucsia para agregar rama */}
       <button
         onClick={() => setIsBranchModalOpen(true)}
-        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all cursor-pointer border border-white/30"
+        className="absolute top-5 right-5 z-20 w-11 h-11 rounded-full fa-btn-purple text-white font-bold text-2xl flex items-center justify-center shadow-2xl cursor-pointer"
         title="Agregar Rama al Canvas"
       >
         +
@@ -232,8 +232,8 @@ export function BranchCanvas({ repository, onOpenConsole }: BranchCanvasProps) {
         onConnect={handleConnect}
         fitView
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1.5} color="#3a6050" />
-        <Controls className="!bg-[var(--color-bg-surface)] !border-[var(--color-primary)] !text-white" />
+        <Background variant={BackgroundVariant.Dots} gap={28} size={1.8} color="#00e5ff33" />
+        <Controls className="!bg-[#0c2540]/80 !backdrop-blur-md !border-cyan-400/40 !text-white !rounded-xl shadow-xl" />
       </ReactFlow>
 
       {/* Modal para agregar rama */}

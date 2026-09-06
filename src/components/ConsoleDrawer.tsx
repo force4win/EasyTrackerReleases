@@ -178,14 +178,14 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-[var(--color-bg-surface)] border-l border-[var(--color-primary)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-[#091b2c]/95 backdrop-blur-2xl border-l border-cyan-400/40 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 select-none">
       {/* Header — basado en Diapositiva 9 */}
-      <div className="px-6 py-4 bg-[#ea580c] border-b border-orange-700 flex justify-between items-center text-white shadow-md">
+      <div className="px-6 py-4 fa-glass-header-orange flex justify-between items-center text-white shadow-md">
         <div>
-          <div className="flex items-center gap-2 font-bold text-lg">
+          <div className="flex items-center gap-2 font-bold text-lg fa-text-shadow">
             <span>&gt;_ Consola: {connection.label}</span>
           </div>
-          <p className="text-xs font-mono opacity-90 mt-0.5 truncate max-w-md">
+          <p className="text-xs font-mono text-orange-100 mt-0.5 truncate max-w-md">
             {repository.name} ({repository.folderPath})
           </p>
         </div>
@@ -201,16 +201,16 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
       {/* Main Content: Split Editor and Console */}
       <div className="flex-1 flex flex-col p-4 space-y-4 overflow-y-auto">
         {/* Editor section */}
-        <div className="flex flex-col bg-[#1e293b] rounded-xl border border-slate-700 p-3 shadow-md">
+        <div className="flex flex-col bg-black/40 rounded-2xl border border-cyan-500/30 p-4 shadow-xl">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-cyan-200 fa-text-shadow">
               Secuencia de Comandos (Pseudocódigo / Git)
             </span>
             <div className="flex items-center gap-2">
-              {isSaved && <span className="text-xs text-green-400 font-medium">¡Guardado!</span>}
+              {isSaved && <span className="text-xs text-emerald-400 font-bold animate-pulse">¡Guardado!</span>}
               <button
                 onClick={handleSaveScript}
-                className="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 text-white text-xs rounded font-medium transition-colors cursor-pointer"
+                className="px-3 py-1.5 fa-btn-cyan text-xs rounded-xl font-bold transition-all cursor-pointer"
               >
                 Guardar Script
               </button>
@@ -220,18 +220,18 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
             value={scriptText}
             onChange={e => setScriptText(e.target.value)}
             rows={7}
-            className="w-full bg-[#0f172a] border border-slate-700 rounded-lg p-3 text-cyan-300 font-mono text-xs leading-relaxed focus:outline-none focus:border-orange-500 resize-y"
+            className="w-full bg-[#05111e]/90 border border-cyan-500/40 rounded-xl p-3 text-cyan-300 font-mono text-xs leading-relaxed focus:outline-none focus:border-cyan-300 resize-y shadow-inner"
             placeholder="Ingresa los comandos de Git..."
           />
         </div>
 
         {/* Action controls */}
-        <div className="flex justify-between items-center bg-[#18181b] p-3 rounded-xl border border-zinc-800">
+        <div className="flex justify-between items-center bg-black/50 p-3 rounded-2xl border border-white/10">
           <div className="flex gap-2">
             <button
               onClick={handleExecute}
               disabled={isExecuting}
-              className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-sm rounded-lg shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-2"
+              className="px-5 py-2.5 fa-btn-green disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
             >
               {isExecuting ? (
                 <>
@@ -247,7 +247,7 @@ export function ConsoleDrawer({ isOpen, onClose, connection, repository }: Conso
 
           <button
             onClick={() => setLogs([])}
-            className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white text-xs rounded-lg transition-colors cursor-pointer"
+            className="px-3.5 py-1.5 fa-btn-glass text-xs rounded-xl transition-colors cursor-pointer"
           >
             ⟳ Limpiar Consola
           </button>

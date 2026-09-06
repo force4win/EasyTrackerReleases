@@ -1,33 +1,41 @@
 @import "tailwindcss";
 
-/* ==============================
-   TEMA BASE — Generador de Releases
-   ============================== */
+/* ============================================================
+   SISTEMA DE DISEÑO FRUTIGER AERO (c. 2004-2013)
+   Guía de Diseño UI/UX — Generador de Releases
+   ============================================================ */
 
-@theme {
-  --color-bg-primary: #1a1a2e;
-  --color-bg-surface: #16213e;
-  --color-bg-canvas: #2d4a3e;
-  --color-primary: #0f3460;
-  --color-primary-light: #1a5276;
-  --color-accent: #e94560;
-  --color-accent-hover: #ff6b81;
-  --color-text: #eaeaea;
-  --color-text-muted: #a0a0b0;
-  --color-success: #2ecc71;
+:root {
+  /* Tokens de Color Atmosféricos */
+  --color-sky-zenith: #00a3e0;
+  --color-sky-horizon: #72c7f7;
+  --color-aqua-marine: #00e5ff;
+  --color-nature-leaf: #54c21b;
+  --color-nature-lime: #99e343;
+  --color-deep-ocean: #0a2540;
+  --color-aero-blue: #1c527e;
+
+  /* Colores del tema actual */
+  --color-bg-primary: #0a192f;
+  --color-bg-surface: rgba(15, 32, 55, 0.75);
+  --color-bg-canvas: #0d2838;
+  --color-primary: #0b3c5d;
+  --color-primary-light: #166088;
+  --color-accent: #00e5ff;
+  --color-accent-hover: #72c7f7;
+  --color-text: #ffffff;
+  --color-text-muted: #b0d4eb;
+  --color-success: #54c21b;
   --color-warning: #f39c12;
-  --color-error: #e74c3c;
-  --color-edge-red: #e74c3c;
+  --color-error: #ff4757;
+  --color-edge-red: #ff4757;
   --color-edge-yellow: #f1c40f;
-  --color-edge-purple: #9b59b6;
-  --color-sidebar: #00b4d8;
-  --color-node: #1e3a5f;
+  --color-edge-purple: #a55eea;
+  --color-sidebar: #00a3e0;
+  --color-node: #0d3b66;
 }
 
-/* ==============================
-   BASE STYLES
-   ============================== */
-
+/* Base styles */
 * {
   margin: 0;
   padding: 0;
@@ -35,11 +43,12 @@
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Segoe UI', 'Frutiger', 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--color-bg-primary);
   color: var(--color-text);
   min-height: 100vh;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -48,20 +57,274 @@ body {
   flex-direction: column;
 }
 
-/* Scrollbar personalizada */
+/* ============================================================
+   ESTILOS FRUTIGER AERO: CRISTALES, GRADIENTES Y BOTONES GLOSSY
+   ============================================================ */
+
+/* Fondo Atmosférico con Resplandor de Cielo y Agua */
+.fa-background {
+  background: radial-gradient(circle at 50% 15%, #184a75 0%, #0d2b45 45%, #051624 100%);
+  position: relative;
+}
+
+/* Resplandor Solar / Lens Flare Frutiger */
+.fa-lens-flare {
+  position: absolute;
+  top: -100px;
+  left: 30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.25) 0%, rgba(114, 199, 247, 0.08) 40%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Panel Aero Glass Translúcido */
+.fa-glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(0, 163, 224, 0.08) 100%
+  );
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 12px 35px rgba(0, 30, 60, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -1px 2px rgba(0, 40, 80, 0.2);
+  border-radius: 16px;
+}
+
+/* Ventana Flotante Aero Glass Modal */
+.fa-glass-window {
+  background: linear-gradient(
+    160deg,
+    rgba(20, 45, 75, 0.92) 0%,
+    rgba(10, 28, 48, 0.95) 100%
+  );
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1.5px solid rgba(114, 199, 247, 0.5);
+  box-shadow: 
+    0 20px 50px rgba(0, 20, 50, 0.7),
+    0 0 30px rgba(0, 229, 255, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+}
+
+/* Header de Ventana con Espejo/Specular Split */
+.fa-glass-header {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.08) 49%,
+    rgba(0, 163, 224, 0.35) 50%,
+    rgba(0, 100, 180, 0.5) 100%
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Header Verde Naranja o Dorado Especial */
+.fa-glass-header-orange {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.1) 49%,
+    rgba(234, 88, 12, 0.8) 50%,
+    rgba(194, 65, 12, 0.9) 100%
+  );
+  border-bottom: 1px solid rgba(255, 180, 100, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.fa-glass-header-amber {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.12) 49%,
+    rgba(217, 119, 6, 0.85) 50%,
+    rgba(180, 83, 9, 0.95) 100%
+  );
+  border-bottom: 1px solid rgba(253, 230, 138, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ============================================================
+   BOTONES GELATINOSOS GLOSSY (Pill & Aero Buttons)
+   ============================================================ */
+
+/* Botón Verde Clorofila Primario (CTA) */
+.fa-btn-green {
+  background: linear-gradient(
+    to bottom,
+    #8be635 0%,
+    #54c21b 49%,
+    #43a611 50%,
+    #67d422 100%
+  );
+  border: 1px solid #2e7a0b;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fa-btn-green:hover:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #a0f246 0%,
+    #65d629 49%,
+    #4fb816 50%,
+    #7be033 100%
+  );
+  box-shadow: 
+    0 0 18px rgba(153, 227, 67, 0.7),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+  transform: translateY(-1px) scale(1.02);
+}
+.fa-btn-green:active:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #43a611 0%,
+    #54c21b 100%
+  );
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  transform: translateY(1px);
+}
+
+/* Botón Cian Cielo Secundario / Acción */
+.fa-btn-cyan {
+  background: linear-gradient(
+    to bottom,
+    #52d0fd 0%,
+    #00a3e0 49%,
+    #008bbd 50%,
+    #1ebef7 100%
+  );
+  border: 1px solid #005b8a;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 40, 80, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fa-btn-cyan:hover:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #73dcff 0%,
+    #17b5f2 49%,
+    #009cd3 50%,
+    #3acbfb 100%
+  );
+  box-shadow: 
+    0 0 18px rgba(0, 229, 255, 0.75),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+  transform: translateY(-1px) scale(1.02);
+}
+.fa-btn-cyan:active:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #007aa8 0%,
+    #00a3e0 100%
+  );
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  transform: translateY(1px);
+}
+
+/* Botón Morado/Fucsia (Release / Special) */
+.fa-btn-purple {
+  background: linear-gradient(
+    to bottom,
+    #d946ef 0%,
+    #c026d3 49%,
+    #9333ea 50%,
+    #a855f7 100%
+  );
+  border: 1px solid #7e22ce;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 14px rgba(168, 85, 247, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fa-btn-purple:hover:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    #e879f9 0%,
+    #d946ef 49%,
+    #a855f7 50%,
+    #c084fc 100%
+  );
+  box-shadow: 
+    0 0 20px rgba(217, 70, 239, 0.75),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Botón Neutro de Vidrio / Cristal */
+.fa-btn-glass {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.08) 49%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 4px 10px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+.fa-btn-glass:hover:not(:disabled) {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.18) 49%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+/* EFECTOS DE TEXTO FRUTIGER AERO */
+.fa-text-glow {
+  color: #ffffff;
+  text-shadow: 
+    0 0 8px rgba(0, 229, 255, 0.8),
+    0 1px 3px rgba(0, 20, 50, 0.9);
+}
+
+.fa-text-shadow {
+  text-shadow: 0 1px 3px rgba(0, 15, 35, 0.8);
+}
+
+/* SCROLLBAR AERO GLASS CUSTOM */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-primary);
+  background: rgba(8, 25, 45, 0.6);
+  border-radius: 6px;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 4px;
+  background: linear-gradient(to bottom, #72c7f7, #00a3e0);
+  border-radius: 6px;
+  border: 2px solid rgba(8, 25, 45, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-light);
+  background: linear-gradient(to bottom, #00e5ff, #00a3e0);
 }

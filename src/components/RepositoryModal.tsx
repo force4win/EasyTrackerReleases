@@ -44,13 +44,12 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
       const selected = await window.electronAPI.dialog.selectFolder()
       if (selected) {
         setFolderPath(selected)
-        // Autocompletar nombre con el nombre de la carpeta si está vacío
         if (!name) {
           const folderName = selected.split(/[\\/]/).pop() || ''
           setName(folderName)
         }
       }
-    } catch (err: any) {
+    } catch {
       setError('Error al seleccionar la carpeta')
     }
   }
@@ -79,31 +78,31 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-      <div className="w-full max-w-md bg-[var(--color-bg-surface)] border border-[var(--color-primary)] rounded-xl shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-[var(--color-primary)] flex justify-between items-center bg-[var(--color-primary)]/30">
-          <h3 className="text-lg font-semibold text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-in fade-in duration-200 select-none">
+      <div className="w-full max-w-md fa-glass-window overflow-hidden flex flex-col border border-cyan-400/50 shadow-2xl">
+        {/* Header Especular Frutiger Aero */}
+        <div className="px-6 py-4 fa-glass-header flex justify-between items-center text-white">
+          <h3 className="text-lg font-bold tracking-wide fa-text-shadow">
             {initialData ? 'Editar Repositorio' : 'Agregar Repositorio'}
           </h3>
           <button
             onClick={onClose}
-            className="text-[var(--color-text-muted)] hover:text-white text-xl cursor-pointer"
+            className="text-cyan-200 hover:text-white text-xl font-bold cursor-pointer transition-colors"
           >
             ✕
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        {/* Formulario */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 bg-[#0a1c2e]/90">
           {error && (
-            <div className="p-3 bg-[var(--color-error)]/20 border border-[var(--color-error)] text-[var(--color-error)] text-sm rounded-lg">
+            <div className="p-3 bg-red-950/80 border border-red-500 text-red-200 text-xs rounded-xl shadow-inner">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-1">
+            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
               Nombre del Repositorio
             </label>
             <input
@@ -111,12 +110,12 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Ej. OperationAPI"
-              className="w-full px-3 py-2 bg-[var(--color-bg-primary)] border border-[var(--color-primary)] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-accent)]"
+              className="w-full px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-xs focus:outline-none focus:border-cyan-300 shadow-inner"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-text-muted)] mb-1">
+            <label className="block text-xs font-bold text-cyan-200 mb-1.5 uppercase tracking-wider fa-text-shadow">
               Ruta de la Carpeta (Git)
             </label>
             <div className="flex gap-2">
@@ -125,33 +124,33 @@ export function RepositoryModal({ isOpen, onClose, onSave, initialData }: Reposi
                 value={folderPath}
                 onChange={e => setFolderPath(e.target.value)}
                 placeholder="D:\folder\folderOper"
-                className="flex-1 px-3 py-2 bg-[var(--color-bg-primary)] border border-[var(--color-primary)] rounded-lg text-white placeholder-gray-500 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+                className="flex-1 px-3.5 py-2.5 bg-black/50 border border-cyan-500/40 rounded-xl text-white placeholder-cyan-200/40 text-xs font-mono focus:outline-none focus:border-cyan-300 shadow-inner"
               />
               <button
                 type="button"
                 onClick={handleBrowseFolder}
-                className="px-3 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white text-sm font-medium rounded-lg transition-colors cursor-pointer shrink-0"
+                className="px-3.5 py-2.5 fa-btn-cyan text-xs font-bold rounded-xl cursor-pointer shrink-0"
               >
                 Examinar...
               </button>
             </div>
           </div>
 
-          {/* Buttons */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-[var(--color-primary)]/50">
+          {/* Botones Acciones Gelatinosas */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-cyan-500/20">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-transparent hover:bg-white/5 text-[var(--color-text-muted)] hover:text-white text-sm rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-2 fa-btn-glass text-xs font-bold rounded-xl cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
+              className="px-5 py-2 fa-btn-green text-xs font-bold rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
             >
-              {isSubmitting ? 'Guardando...' : initialData ? 'Guardar Cambios' : 'Agregar'}
+              {isSubmitting ? 'Guardando...' : 'Guardar Repositorio'}
             </button>
           </div>
         </form>

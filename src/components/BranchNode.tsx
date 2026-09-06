@@ -15,21 +15,26 @@ export type BranchCustomNode = Node<BranchNodeData, 'branchNode'>
 export const BranchNode = memo(({ id, data, selected }: NodeProps<BranchCustomNode>) => {
   return (
     <div
-      className={`group relative px-6 py-3 rounded-3xl bg-[#0b4f6c] border-2 text-white font-semibold text-sm shadow-xl min-w-[130px] text-center select-none transition-all ${
-        selected ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105' : 'border-[#012a4a] hover:border-cyan-400'
+      className={`group relative px-6 py-3.5 rounded-full text-white font-bold text-sm shadow-2xl min-w-[140px] text-center select-none transition-all duration-200 fa-glass-panel overflow-hidden border ${
+        selected
+          ? 'border-amber-300 ring-4 ring-amber-400/40 scale-105 shadow-amber-400/30'
+          : 'border-cyan-300/40 hover:border-cyan-200 hover:scale-105 shadow-cyan-500/20'
       }`}
     >
+      {/* Specular split highlight superior Frutiger Aero */}
+      <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-full" />
+
       {/* Target and Source Handles for React Flow connections */}
-      <Handle type="target" position={Position.Left} id="left-target" className="!bg-cyan-400 !w-3 !h-3" />
-      <Handle type="source" position={Position.Right} id="right-source" className="!bg-amber-400 !w-3 !h-3" />
-      <Handle type="target" position={Position.Top} id="top-target" className="!bg-cyan-400 !w-3 !h-3" />
-      <Handle type="source" position={Position.Bottom} id="bottom-source" className="!bg-amber-400 !w-3 !h-3" />
+      <Handle type="target" position={Position.Left} id="left-target" className="!bg-cyan-300 !w-3.5 !h-3.5 !border-2 !border-white shadow-lg" />
+      <Handle type="source" position={Position.Right} id="right-source" className="!bg-amber-300 !w-3.5 !h-3.5 !border-2 !border-white shadow-lg" />
+      <Handle type="target" position={Position.Top} id="top-target" className="!bg-cyan-300 !w-3.5 !h-3.5 !border-2 !border-white shadow-lg" />
+      <Handle type="source" position={Position.Bottom} id="bottom-source" className="!bg-amber-300 !w-3.5 !h-3.5 !border-2 !border-white shadow-lg" />
 
       {/* Content */}
-      <div className="flex flex-col items-center justify-center">
-        <span>{data.label}</span>
-        <span className="text-[10px] font-mono text-cyan-300 opacity-80 uppercase tracking-wider mt-0.5">
-          [{data.branchType}]
+      <div className="flex flex-col items-center justify-center relative z-10">
+        <span className="fa-text-shadow tracking-wide">{data.label}</span>
+        <span className="text-[10px] font-mono text-cyan-200 bg-cyan-950/60 px-2 py-0.5 rounded-full border border-cyan-400/30 mt-1 uppercase tracking-wider font-semibold">
+          {data.branchType}
         </span>
       </div>
 
@@ -40,8 +45,8 @@ export const BranchNode = memo(({ id, data, selected }: NodeProps<BranchCustomNo
             e.stopPropagation()
             data.onDelete?.(id)
           }}
-          className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-700 shadow-md cursor-pointer"
-          title="Eliminar nodo"
+          className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-lg cursor-pointer border border-white z-20"
+          title="Eliminar rama"
         >
           ✕
         </button>

@@ -24,7 +24,7 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
   const [activeConsoleConnectionId, setActiveConsoleConnectionId] = useState<string | null>(null)
   const [activeConsoleRepoId, setActiveConsoleRepoId] = useState<string | null>(null)
 
-  // Track executed connections in current session (turns green as in Slide 34)
+  // Track executed connections in current session (turns green)
   const [executedConnectionIds, setExecutedConnectionIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
@@ -57,30 +57,33 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
   const activeConsoleRepo = repositories.find(r => r.id === activeConsoleRepoId) || null
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#004d61] relative overflow-hidden">
-      {/* Top Header — basado en Diapositiva 26 */}
-      <div className="flex justify-between items-center px-8 py-4 bg-[#003543] border-b border-cyan-700/50 shadow-lg shrink-0">
+    <div className="w-full h-full flex flex-col fa-background relative overflow-hidden select-none">
+      {/* Resplandor Aero */}
+      <div className="fa-lens-flare" />
+
+      {/* Top Header Frutiger Aero */}
+      <div className="flex justify-between items-center px-8 py-4 fa-glass-header shrink-0 z-10">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold text-white tracking-wide">{release.name}</h2>
-          <span className="text-xs bg-cyan-900/60 border border-cyan-500/40 text-cyan-200 px-3 py-1 rounded-full font-mono">
+          <h2 className="text-2xl font-bold text-white tracking-wide fa-text-shadow">{release.name}</h2>
+          <span className="text-xs bg-cyan-950/60 border border-cyan-400/40 text-cyan-200 px-3.5 py-1 rounded-full font-mono font-bold shadow-inner">
             {addedRepositories.length} repositorio(s) configurado(s)
           </span>
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Botón + para agregar repositorio al release (Diapositiva 26) */}
+          {/* Botón + Gelatinoso Fucsia para agregar repositorio */}
           <button
             onClick={() => setIsAddRepoModalOpen(true)}
-            className="w-10 h-10 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-2xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border border-white/30"
+            className="w-10 h-10 rounded-full fa-btn-purple text-white font-bold text-2xl flex items-center justify-center shadow-lg cursor-pointer"
             title="Agregar Repositorio al Release"
           >
             +
           </button>
 
-          {/* Botón 🚪 para salir del workspace y volver al resumen (Diapositiva 26) */}
+          {/* Botón Salir */}
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold text-lg flex items-center justify-center shadow-md transition-all cursor-pointer"
+            className="w-10 h-10 rounded-full fa-btn-glass text-white font-bold text-lg flex items-center justify-center shadow-md cursor-pointer"
             title="Cerrar workspace y volver a Releases"
           >
             🚪
@@ -88,39 +91,42 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
         </div>
       </div>
 
-      {/* Main Workspace Area (Diapositivas 26 y 27) */}
-      <div className="flex-1 p-8 overflow-auto">
+      {/* Main Workspace Area */}
+      <div className="flex-1 p-8 overflow-auto z-10">
         {addedRepositories.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-cyan-100/60 opacity-70">
-            <div className="text-center max-w-md bg-black/20 p-8 rounded-2xl border border-white/10">
-              <p className="text-6xl mb-4">🗄️</p>
-              <p className="text-xl font-bold text-white mb-2">Espacio de trabajo vacío</p>
-              <p className="text-sm">
-                Pulsa el botón + morado arriba a la derecha para agregar repositorios a este Release.
+          <div className="h-full flex items-center justify-center text-cyan-200/60">
+            <div className="text-center max-w-md fa-glass-panel p-8">
+              <p className="text-6xl mb-4 animate-bounce">🗄️</p>
+              <p className="text-xl font-bold text-white mb-2 fa-text-shadow">Espacio de trabajo vacío</p>
+              <p className="text-xs text-cyan-100/70 leading-relaxed">
+                Pulsa el botón <strong className="text-fuchsia-300">+</strong> morado arriba a la derecha para agregar repositorios a este Release.
               </p>
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {addedRepositories.map(repo => {
-              // Obtenemos todas las conexiones configuradas para este repositorio
               const repoConns = connections.filter(c => c.repositoryId === repo.id)
 
               return (
                 <div
                   key={repo.id}
-                  className="group relative bg-[#00607a] border-2 border-cyan-500/40 rounded-2xl shadow-2xl p-6 flex flex-col justify-between transition-all hover:border-cyan-300"
+                  className="group relative fa-glass-panel border border-cyan-400/40 p-6 flex flex-col justify-between transition-all duration-300 hover:scale-102 shadow-2xl overflow-hidden"
                 >
-                  {/* Cylinder/Card Header (Diapositiva 26) */}
+                  {/* Specular split highlight superior */}
+                  <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-2xl" />
+
                   <div>
-                    <div className="flex items-center justify-between mb-4 border-b border-cyan-400/30 pb-3">
+                    <div className="flex items-center justify-between mb-4 border-b border-cyan-400/20 pb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/40 flex items-center justify-center text-2xl">
-                          🗄️
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 p-0.5 shadow-md">
+                          <div className="w-full h-full bg-[#0a2540] rounded-[10px] flex items-center justify-center text-xl">
+                            🗄️
+                          </div>
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-white">{repo.name}</h3>
-                          <p className="text-[11px] font-mono text-cyan-200/70 truncate max-w-[200px]">
+                          <h3 className="text-lg font-bold text-white fa-text-shadow">{repo.name}</h3>
+                          <p className="text-[11px] font-mono text-cyan-200/70 truncate max-w-[180px]">
                             {repo.folderPath}
                           </p>
                         </div>
@@ -128,21 +134,21 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
 
                       <button
                         onClick={() => handleRemoveRepo(repo.id)}
-                        className="opacity-0 group-hover:opacity-100 text-cyan-300 hover:text-red-300 text-sm p-1 transition-opacity cursor-pointer"
+                        className="opacity-0 group-hover:opacity-100 text-cyan-200 hover:text-red-400 text-sm p-1.5 rounded hover:bg-black/30 transition-all cursor-pointer"
                         title="Remover repositorio del release"
                       >
                         🗑️
                       </button>
                     </div>
 
-                    {/* Apéndices circulares naranjas de conexión (Diapositivas 26 y 27) */}
+                    {/* Apéndices / Pases de Entorno */}
                     <div className="space-y-3 my-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-cyan-200/80">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-cyan-200 fa-text-shadow">
                         Acciones / Pases de Entorno:
                       </p>
 
                       {repoConns.length === 0 ? (
-                        <div className="text-xs text-cyan-200/60 italic p-3 bg-black/20 rounded-lg">
+                        <div className="text-xs text-cyan-200/60 italic p-3 bg-black/30 rounded-xl border border-white/5">
                           Sin transiciones de ramas configuradas en el módulo de repositorios.
                         </div>
                       ) : (
@@ -152,25 +158,24 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
                           return (
                             <div
                               key={conn.id}
-                              className={`flex items-center justify-between px-4 py-2.5 rounded-full border shadow-md transition-all ${
+                              className={`flex items-center justify-between px-4 py-2.5 rounded-full shadow-lg transition-all ${
                                 isExecuted
-                                  ? 'bg-emerald-600 border-emerald-400 text-white' // Verde si se ejecutó (Diapositiva 34)
-                                  : 'bg-[#f97316] hover:bg-[#ea580c] border-orange-400 text-white' // Naranja por defecto (Diap. 26)
+                                  ? 'fa-btn-green'
+                                  : 'fa-btn-cyan'
                               }`}
                             >
-                              <span className="text-xs font-semibold truncate max-w-[180px]">
+                              <span className="text-xs font-bold truncate max-w-[170px] fa-text-shadow">
                                 {conn.label}
                               </span>
 
-                              {/* Botón de consola >_ en el apéndice (Diapositiva 26) */}
+                              {/* Botón de consola >_ */}
                               <button
                                 onClick={() => {
                                   setActiveConsoleConnectionId(conn.id)
                                   setActiveConsoleRepoId(repo.id)
-                                  // Marcar como ejecutado al abrir y simular éxito
                                   setExecutedConnectionIds(prev => new Set(prev).add(conn.id))
                                 }}
-                                className="w-6 h-6 rounded-full bg-[#1e293b] hover:bg-[#0f172a] border border-white/40 flex items-center justify-center text-[11px] font-mono font-bold text-cyan-300 hover:text-white transition-colors cursor-pointer shrink-0"
+                                className="w-6 h-6 rounded-full bg-black/40 hover:bg-black/70 border border-white/40 flex items-center justify-center text-[11px] font-mono font-bold text-cyan-200 hover:text-white transition-colors cursor-pointer shrink-0 shadow-inner"
                                 title="Ejecutar comandos de este apéndice"
                               >
                                 &gt;_
@@ -185,7 +190,9 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
                   <div className="mt-4 pt-3 border-t border-cyan-400/20 flex justify-between items-center text-xs text-cyan-200/70 font-mono">
                     <span>{repoConns.length} apéndices</span>
                     {repoConns.length > 0 && (
-                      <span className="text-emerald-300 font-bold">● Listo para deploy</span>
+                      <span className="text-emerald-300 font-bold flex items-center gap-1">
+                        <span>●</span> Listo
+                      </span>
                     )}
                   </div>
                 </div>
@@ -203,10 +210,13 @@ export function ReleaseWorkspace({ release, onClose }: ReleaseWorkspaceProps) {
         onAdd={handleAddRepo}
       />
 
-      {/* Consola para ejecutar apéndice individual */}
+      {/* Consola y Editor de Comandos */}
       <ConsoleDrawer
         isOpen={!!activeConsoleConnectionId}
-        onClose={() => setActiveConsoleConnectionId(null)}
+        onClose={() => {
+          setActiveConsoleConnectionId(null)
+          setActiveConsoleRepoId(null)
+        }}
         connection={activeConnection}
         repository={activeConsoleRepo}
       />

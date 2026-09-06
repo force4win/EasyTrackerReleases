@@ -18,7 +18,6 @@ export type BranchEdgeData = {
 
 export type BranchCustomEdge = Edge<BranchEdgeData, 'branchEdge'>
 
-// Colores según el tipo de entorno de destino (basado en Storyboard Diapositivas 7, 10, 13)
 export function getEdgeColor(targetType: BranchType): string {
   switch (targetType) {
     case 'QA':
@@ -64,8 +63,9 @@ export const BranchEdge = memo(({
         path={edgePath}
         style={{
           stroke: edgeColor,
-          strokeWidth: selected ? 4 : 3,
-          transition: 'stroke-width 0.2s',
+          strokeWidth: selected ? 4.5 : 3.5,
+          filter: `drop-shadow(0 0 6px ${edgeColor}aa)`,
+          transition: 'all 0.2s ease',
         }}
       />
 
@@ -76,14 +76,14 @@ export const BranchEdge = memo(({
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             pointerEvents: 'all',
           }}
-          className="group flex items-center gap-1.5 bg-[#0284c7] hover:bg-[#0369a1] border border-cyan-300/40 px-2.5 py-1 rounded shadow-lg text-white text-xs font-semibold select-none transition-all"
+          className="group flex items-center gap-1.5 fa-btn-cyan px-3 py-1.5 rounded-full shadow-2xl text-white text-xs font-bold select-none border border-white/40 cursor-pointer"
         >
           {/* Label text */}
-          <span className="truncate max-w-[140px]" title={data?.label}>
+          <span className="truncate max-w-[140px] fa-text-shadow" title={data?.label}>
             {data?.label}
           </span>
 
-          {/* Terminal / Console Icon Button (Diapositiva 9) */}
+          {/* Terminal / Console Icon Button */}
           <button
             onClick={e => {
               e.stopPropagation()
@@ -91,7 +91,7 @@ export const BranchEdge = memo(({
                 data.onOpenConsole(data.connectionId)
               }
             }}
-            className="w-5 h-5 rounded bg-[#1e293b] hover:bg-[#0f172a] border border-cyan-400/50 flex items-center justify-center text-[10px] font-mono font-bold text-cyan-300 hover:text-white transition-colors cursor-pointer shrink-0"
+            className="w-5 h-5 rounded-md bg-black/40 hover:bg-black/70 border border-cyan-300/50 flex items-center justify-center text-[10px] font-mono font-bold text-cyan-300 hover:text-white transition-colors cursor-pointer shrink-0 shadow-inner"
             title="Abrir editor de comandos y consola"
           >
             &gt;_
@@ -106,7 +106,7 @@ export const BranchEdge = memo(({
                   data?.onDeleteEdge?.(data.connectionId)
                 }
               }}
-              className="w-4 h-4 rounded-full bg-red-600 hover:bg-red-700 text-white text-[10px] hidden group-hover:flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-0.5"
+              className="w-4.5 h-4.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-[10px] hidden group-hover:flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-0.5 border border-white/50"
               title="Eliminar conexión"
             >
               ✕

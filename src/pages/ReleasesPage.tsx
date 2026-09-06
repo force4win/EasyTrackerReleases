@@ -231,9 +231,12 @@ export function ReleasesPage() {
   )
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)]">
-      {/* Header bar */}
-      <div className="h-14 bg-[var(--color-bg-surface)] border-b border-[var(--color-primary)] flex items-center justify-between px-6 shrink-0 shadow-md">
+    <div className="min-h-screen flex flex-col fa-background relative overflow-hidden select-none">
+      {/* Resplandor Aero */}
+      <div className="fa-lens-flare" />
+
+      {/* Header bar Frutiger Aero */}
+      <div className="h-14 fa-glass-header flex items-center justify-between px-6 shrink-0 shadow-md z-10">
         <button
           onClick={() => {
             if (activeReleaseId) {
@@ -242,41 +245,43 @@ export function ReleasesPage() {
               navigate('/')
             }
           }}
-          className="text-[var(--color-text-muted)] hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-sm font-medium"
+          className="text-cyan-200 hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-xs font-bold uppercase tracking-wider fa-text-shadow"
         >
           ← {activeReleaseId ? 'Volver a lista de Releases' : 'Volver al Inicio'}
         </button>
 
-        <h2 className="text-lg font-bold text-white tracking-wide">
+        <h2 className="text-lg font-extrabold text-white tracking-wide fa-text-shadow">
           {activeRelease ? `Release: ${activeRelease.name}` : 'Gestor de Releases'}
         </h2>
 
-        <div className="w-24"></div> {/* Balance spacer */}
+        <div className="w-28"></div> {/* Balance spacer */}
       </div>
 
       {/* Main Content: Canvas or Release Workspace */}
-      <main className="flex-1 bg-[#2d4a3e] relative overflow-hidden flex flex-col">
+      <main className="flex-1 bg-[#0b273d]/90 relative overflow-hidden flex flex-col z-10">
         {activeRelease ? (
-          /* Workspace del Release activo (Misión 9) */
+          /* Workspace del Release activo */
           <ReleaseWorkspace release={activeRelease} onClose={() => setActiveReleaseId(null)} />
         ) : (
-          /* Canvas de lista de Releases (Diapositivas 22, 24, 28, 38, 41) */
+          /* Canvas de lista de Releases */
           <div className="w-full h-full p-8 relative overflow-auto">
-            {/* Botón flotante + para crear Release en la esquina superior derecha (Diapositiva 22) */}
+            {/* Botón flotante + Gelatinoso Fucsia para crear Release */}
             <button
               onClick={() => setIsModalOpen(true)}
-              className="absolute top-6 right-6 z-10 w-12 h-12 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-3xl flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all cursor-pointer border border-white/30"
+              className="absolute top-6 right-8 z-20 w-12 h-12 rounded-full fa-btn-purple text-white font-bold text-3xl flex items-center justify-center shadow-2xl cursor-pointer"
               title="Crear nuevo Release"
             >
               +
             </button>
 
             {releases.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-white/60 opacity-60">
-                <div className="text-center">
-                  <p className="text-6xl mb-4">🚀</p>
-                  <p className="text-xl font-semibold">Sin Releases configurados</p>
-                  <p className="text-sm mt-2">Haz clic en el botón + morado arriba a la derecha para crear uno</p>
+              <div className="h-full flex items-center justify-center text-cyan-200/60">
+                <div className="text-center p-8 fa-glass-panel max-w-md">
+                  <p className="text-6xl mb-4 animate-bounce">🚀</p>
+                  <p className="text-xl font-bold text-white mb-2 fa-text-shadow">Sin Releases configurados</p>
+                  <p className="text-xs text-cyan-100/70">
+                    Haz clic en el botón <strong className="text-fuchsia-300">+</strong> arriba a la derecha para definir tu primer release
+                  </p>
                 </div>
               </div>
             ) : (
@@ -308,7 +313,7 @@ export function ReleasesPage() {
         onSave={handleCreateRelease}
       />
 
-      {/* Overlay modal "Please Wait" para ejecución en lote (Diapositiva 40) */}
+      {/* Overlay modal "Please Wait" para ejecución en lote */}
       <BatchExecutionModal
         isOpen={batchExecutionState.isOpen}
         groupLabel={batchExecutionState.groupLabel}

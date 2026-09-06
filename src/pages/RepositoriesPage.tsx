@@ -60,30 +60,35 @@ export function RepositoriesPage() {
   }
 
   return (
-    <div className="min-h-screen flex bg-[var(--color-bg-primary)]">
-      {/* Sidebar azul — basado en Diapositivas 2, 3 y 4 */}
-      <aside className="w-64 bg-[var(--color-sidebar)] flex flex-col p-4 shrink-0 shadow-lg border-r border-[var(--color-primary)]/30">
-        <div className="flex items-center justify-between mb-6 bg-[var(--color-primary)]/20 p-2.5 rounded-lg border border-white/20">
-          <h2 className="text-base font-bold text-white tracking-wide">
-            Repositorios
-          </h2>
+    <div className="min-h-screen flex fa-background relative overflow-hidden select-none">
+      {/* Resplandor Aero */}
+      <div className="fa-lens-flare" />
+
+      {/* Sidebar Frutiger Aero — Cristal & Resplandores */}
+      <aside className="w-72 bg-[#0c2540]/80 backdrop-blur-xl border-r border-cyan-400/30 flex flex-col p-4 shrink-0 shadow-2xl z-10">
+        {/* Banner de título del Sidebar */}
+        <div className="flex items-center justify-between mb-6 p-3 rounded-xl bg-gradient-to-r from-cyan-500/30 to-blue-600/30 border border-cyan-300/40 shadow-inner">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🗂️</span>
+            <h2 className="text-base font-bold text-white tracking-wide fa-text-shadow">
+              Repositorios
+            </h2>
+          </div>
           <button
             onClick={handleOpenAddModal}
-            className="w-8 h-8 rounded-lg bg-[var(--color-accent)] text-white
-                       flex items-center justify-center text-xl font-bold shadow-md
-                       hover:bg-[var(--color-accent-hover)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
-            title="Agregar repositorio"
+            className="w-8 h-8 rounded-full fa-btn-cyan text-white flex items-center justify-center text-lg font-bold shadow-lg cursor-pointer"
+            title="Agregar nuevo repositorio"
           >
             +
           </button>
         </div>
 
-        {/* Lista de repositorios */}
+        {/* Lista de repositorios con acabado de cristal y reflejos */}
         <div className="flex-1 overflow-y-auto space-y-3 pr-1">
           {repositories.length === 0 ? (
-            <div className="text-[var(--color-bg-primary)] text-sm font-medium opacity-70 text-center mt-8 p-4 bg-white/10 rounded-lg">
-              <p className="font-semibold text-white mb-1">Sin repositorios</p>
-              <p className="text-xs text-white/80">Pulsa el botón + para agregar uno</p>
+            <div className="text-cyan-200/70 text-xs text-center mt-8 p-6 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
+              <p className="font-bold text-white text-sm mb-1">Sin Repositorios</p>
+              <p className="text-cyan-100/70">Haz clic en el botón <strong className="text-cyan-300">+</strong> arriba para comenzar</p>
             </div>
           ) : (
             repositories.map(repo => {
@@ -92,30 +97,35 @@ export function RepositoriesPage() {
                 <div
                   key={repo.id}
                   onClick={() => setActiveRepositoryId(repo.id)}
-                  className={`group relative p-3 rounded-lg cursor-pointer transition-all border ${
+                  className={`group relative p-3.5 rounded-xl cursor-pointer transition-all duration-200 border ${
                     isActive
-                      ? 'bg-[#e056fd] border-white text-white shadow-lg scale-102'
-                      : 'bg-[#f3a683] hover:bg-[#e77f67] border-black/10 text-gray-900 shadow-md hover:scale-101'
+                      ? 'bg-gradient-to-r from-cyan-500/40 to-blue-600/50 border-cyan-300 shadow-lg shadow-cyan-500/20 scale-[1.02]'
+                      : 'bg-white/10 hover:bg-white/15 border-white/20 text-slate-100 hover:border-cyan-400/50'
                   }`}
                 >
-                  <div className="font-bold text-sm truncate pr-12">{repo.name}</div>
-                  <div className="text-xs truncate opacity-85 mt-0.5 font-mono">
+                  {/* Highlight especular */}
+                  <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-xl" />
+
+                  <div className="font-bold text-sm truncate pr-14 text-white fa-text-shadow">
+                    {repo.name}
+                  </div>
+                  <div className="text-[11px] truncate text-cyan-200/80 mt-1 font-mono">
                     {repo.folderPath}
                   </div>
 
-                  {/* Acciones (Editar/Eliminar) */}
-                  <div className="absolute right-2 top-2 hidden group-hover:flex items-center gap-1 bg-black/40 p-1 rounded backdrop-blur-xs">
+                  {/* Acciones flotantes (Editar/Eliminar) */}
+                  <div className="absolute right-2 top-2.5 hidden group-hover:flex items-center gap-1 bg-black/60 p-1 rounded-lg border border-white/20 backdrop-blur-md">
                     <button
                       onClick={e => handleOpenEditModal(repo, e)}
-                      className="text-white hover:text-amber-300 text-xs px-1"
-                      title="Editar"
+                      className="text-white hover:text-cyan-300 text-xs px-1.5 py-0.5 rounded hover:bg-white/10 transition-colors"
+                      title="Editar Repositorio"
                     >
                       ✏️
                     </button>
                     <button
                       onClick={e => handleDelete(repo.id, e)}
-                      className="text-white hover:text-red-400 text-xs px-1"
-                      title="Eliminar"
+                      className="text-white hover:text-red-400 text-xs px-1.5 py-0.5 rounded hover:bg-white/10 transition-colors"
+                      title="Eliminar Repositorio"
                     >
                       🗑️
                     </button>
@@ -127,36 +137,36 @@ export function RepositoriesPage() {
         </div>
       </aside>
 
-      {/* Área principal — Canvas */}
-      <main className="flex-1 bg-[var(--color-bg-canvas)] flex flex-col">
-        {/* Header bar */}
-        <div className="h-14 bg-[var(--color-bg-surface)] border-b border-[var(--color-primary)]
-                        flex items-center justify-between px-6 shrink-0 shadow-md">
+      {/* Área principal — Canvas de Ramas */}
+      <main className="flex-1 bg-[#0b273d]/90 flex flex-col z-10">
+        {/* Header bar Frutiger Aero */}
+        <div className="h-14 fa-glass-header flex items-center justify-between px-6 shrink-0 shadow-md">
           <button
             onClick={() => navigate('/')}
-            className="text-[var(--color-text-muted)] hover:text-white
-                       transition-colors cursor-pointer flex items-center gap-2 text-sm font-medium"
+            className="text-cyan-200 hover:text-white transition-colors cursor-pointer flex items-center gap-2 text-xs font-bold uppercase tracking-wider fa-text-shadow"
           >
             ← Volver al Inicio
           </button>
           
           {activeRepo ? (
             <div className="text-center">
-              <span className="text-white font-bold text-base">{activeRepo.name}</span>
-              <span className="text-[var(--color-text-muted)] text-xs ml-3 font-mono">
-                {activeRepo.folderPath}
+              <span className="text-white font-extrabold text-base tracking-wide fa-text-shadow">
+                {activeRepo.name}
+              </span>
+              <span className="text-cyan-200/80 text-xs ml-3 font-mono">
+                ({activeRepo.folderPath})
               </span>
             </div>
           ) : (
-            <span className="text-[var(--color-text-muted)] text-sm">
-              Selecciona un repositorio para configurar sus branches
+            <span className="text-cyan-200/60 text-xs font-medium italic">
+              Selecciona un repositorio para visualizar y configurar sus ramas Git
             </span>
           )}
 
-          <div className="w-24"></div> {/* Balance spacer */}
+          <div className="w-28"></div> {/* Balance spacer */}
         </div>
 
-        {/* Canvas React Flow */}
+        {/* Canvas de React Flow */}
         <div className="flex-1 relative overflow-hidden">
           {activeRepo ? (
             <BranchCanvas
@@ -164,11 +174,13 @@ export function RepositoriesPage() {
               onOpenConsole={id => setActiveConsoleConnectionId(id)}
             />
           ) : (
-            <div className="flex items-center justify-center h-full text-[var(--color-text-muted)] opacity-50">
-              <div className="text-center">
-                <p className="text-6xl mb-4">🗂️</p>
-                <p className="text-xl font-semibold">Espacio de trabajo de Repositorios</p>
-                <p className="text-sm mt-2">Selecciona o crea un repositorio en el panel de la izquierda</p>
+            <div className="flex items-center justify-center h-full text-cyan-200/50">
+              <div className="text-center p-8 fa-glass-panel max-w-md">
+                <p className="text-6xl mb-4 animate-bounce">🗂️</p>
+                <p className="text-xl font-bold text-white mb-2 fa-text-shadow">Espacio de trabajo de Repositorios</p>
+                <p className="text-xs text-cyan-100/70 leading-relaxed">
+                  Selecciona o crea un repositorio en el panel lateral para administrar sus ramas Git y secuencias de despliegue.
+                </p>
               </div>
             </div>
           )}

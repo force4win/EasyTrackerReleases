@@ -90,16 +90,21 @@ export function ReleaseSummaryCard({
   }, [release.id, releaseRepositories, connections, branches])
 
   return (
-    <div className="relative group w-80 bg-[#16a34a] border-2 border-emerald-600 rounded-2xl p-5 shadow-2xl transition-all hover:scale-102 flex flex-col justify-between">
-      {/* Scroll / Pergamino Header (Diapositivas 28 y 38) */}
+    <div className="relative group w-80 fa-glass-panel p-5 border border-cyan-400/40 shadow-2xl transition-all duration-300 hover:scale-102 flex flex-col justify-between overflow-hidden">
+      {/* Specular split highlight superior */}
+      <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-2xl" />
+
       <div>
+        {/* Header de la tarjeta */}
         <div
           onClick={() => onOpenWorkspace(release.id)}
-          className="bg-[#0b3c5d] hover:bg-[#1d5073] p-3.5 rounded-xl border border-cyan-400/40 cursor-pointer shadow-md flex justify-between items-center mb-4 transition-colors"
+          className="bg-gradient-to-r from-cyan-500/30 to-blue-600/40 hover:from-cyan-500/40 hover:to-blue-600/50 p-4 rounded-xl border border-cyan-300/40 cursor-pointer shadow-lg flex justify-between items-center mb-4 transition-all duration-200"
         >
           <div>
-            <h3 className="text-lg font-bold text-white tracking-wide">{release.name}</h3>
-            <span className="text-[11px] text-cyan-200/80">Ver workspace expandido &gt;</span>
+            <h3 className="text-lg font-bold text-white tracking-wide fa-text-shadow">{release.name}</h3>
+            <span className="text-[11px] text-cyan-200 font-semibold inline-flex items-center gap-1 mt-0.5">
+              Ver workspace expandido →
+            </span>
           </div>
           <div className="flex items-center gap-2">
             {onDeleteRelease && (
@@ -108,24 +113,24 @@ export function ReleaseSummaryCard({
                   e.stopPropagation()
                   onDeleteRelease(release.id)
                 }}
-                className="opacity-0 group-hover:opacity-100 text-cyan-200 hover:text-red-300 text-xs p-1 transition-opacity cursor-pointer"
+                className="opacity-0 group-hover:opacity-100 text-cyan-200 hover:text-red-400 text-xs p-1.5 rounded hover:bg-black/30 transition-all cursor-pointer"
                 title="Eliminar Release"
               >
                 🗑️
               </button>
             )}
-            <span className="text-xl">📜</span>
+            <span className="text-2xl">📜</span>
           </div>
         </div>
 
-        {/* Scroll Body: List of Grouped Transition Arrows (Diapositivas 28, 38, 41) */}
-        <div className="space-y-3 bg-[#15803d]/60 p-4 rounded-xl border border-emerald-500/50">
-          <p className="text-[11px] font-bold text-emerald-100 uppercase tracking-wider mb-2">
+        {/* Lista de Pases de Entorno Agrupados */}
+        <div className="space-y-3 bg-black/30 p-4 rounded-xl border border-white/10 backdrop-blur-md">
+          <p className="text-[11px] font-bold text-cyan-200 uppercase tracking-wider mb-2">
             Pases de Entorno Agrupados:
           </p>
 
           {transitionGroups.length === 0 ? (
-            <div className="text-xs text-emerald-100/70 italic text-center py-4 bg-emerald-950/20 rounded-lg">
+            <div className="text-xs text-cyan-200/60 italic text-center py-4 bg-white/5 rounded-lg border border-white/5">
               Agrega repositorios con transiciones para habilitar pases en lote.
             </div>
           ) : (
@@ -136,15 +141,18 @@ export function ReleaseSummaryCard({
                 <button
                   key={grp.key}
                   onClick={() => onExecuteGroup?.(grp.key)}
-                  className={`w-full relative px-4 py-3 rounded-xl border font-bold text-sm text-left flex justify-between items-center shadow-lg transition-all cursor-pointer group/arrow ${
+                  className={`w-full relative px-4 py-3 rounded-xl font-bold text-sm text-left flex justify-between items-center shadow-lg transition-all cursor-pointer ${
                     isCompleted
-                      ? 'bg-emerald-200 border-emerald-300 text-emerald-950 hover:bg-emerald-100' // Verde de éxito (Diapositiva 41)
-                      : 'bg-[#ea580c] hover:bg-[#c2410c] border-orange-400 text-white hover:scale-102' // Naranja por defecto (Diapositiva 28)
+                      ? 'fa-btn-green'
+                      : 'fa-btn-cyan'
                   }`}
                 >
-                  <span className="truncate">{grp.label}</span>
+                  <span className="truncate flex items-center gap-2">
+                    <span>{isCompleted ? '✅' : '▶'}</span>
+                    {grp.label}
+                  </span>
 
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-black/20 text-white/90">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-black/30 text-white/90 shadow-inner">
                     {grp.repositoryCount} repo(s)
                   </span>
                 </button>
@@ -154,9 +162,11 @@ export function ReleaseSummaryCard({
         </div>
       </div>
 
-      <div className="mt-4 pt-3 border-t border-emerald-500/40 text-xs text-emerald-100/80 flex justify-between items-center font-mono">
-        <span>{transitionGroups.length} pase(s) en lote</span>
-        <span className="text-white font-bold">Resumen listo</span>
+      <div className="mt-5 pt-3 border-t border-cyan-400/20 text-xs text-cyan-200/80 flex justify-between items-center font-mono">
+        <span>{transitionGroups.length} pase(s) configurado(s)</span>
+        <span className="text-emerald-300 font-bold flex items-center gap-1">
+          <span>●</span> Listo
+        </span>
       </div>
     </div>
   )
