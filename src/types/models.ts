@@ -10,11 +10,22 @@ export type ExecutionStatus = 'pending' | 'running' | 'success' | 'error' | 'can
 
 // --- Entidades principales ---
 
+/** Ambiente de trabajo: contenedor lógico que agrupa repositorios y releases */
+export interface Environment {
+  id: string
+  name: string
+  description: string
+  color: string    // Color hex para identificación visual (ej. "#00e5ff")
+  icon: string     // Emoji/icono (ej. "🏠", "💼")
+  createdAt: string
+}
+
 /** Repositorio Git local */
 export interface Repository {
   id: string
   name: string
   folderPath: string
+  environmentId: string   // Ambiente al que pertenece
   createdAt: string
 }
 
@@ -44,6 +55,7 @@ export interface Connection {
 export interface Release {
   id: string
   name: string
+  environmentId: string   // Ambiente al que pertenece
   createdAt: string
 }
 
@@ -68,24 +80,33 @@ export interface ExecutionLog {
   error: string | null         // Mensaje de error si falló
 }
 
+/** Configuración global de la aplicación */
+export interface AppSettings {
+  lastActiveEnvironmentId: string | null
+}
+
 // --- Esquema de la base de datos ---
 
 /** Estructura completa del archivo data.json */
 export interface DatabaseSchema {
+  environments: Environment[]
   repositories: Repository[]
   branches: Branch[]
   connections: Connection[]
   releases: Release[]
   releaseRepositories: ReleaseRepository[]
   executionLogs: ExecutionLog[]
+  settings: AppSettings
 }
 
 /** Esquema vacío por defecto */
 export const DEFAULT_DB: DatabaseSchema = {
+  environments: [],
   repositories: [],
   branches: [],
   connections: [],
   releases: [],
   releaseRepositories: [],
   executionLogs: [],
+  settings: { lastActiveEnvironmentId: null },
 }

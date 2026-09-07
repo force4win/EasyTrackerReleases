@@ -7,6 +7,8 @@ import type {
   Connection,
   Release,
   ReleaseRepository,
+  Environment,
+  AppSettings,
   DatabaseSchema,
 } from './types/models'
 
@@ -53,11 +55,23 @@ interface ElectronAPI {
     ) => () => void
   }
 
+  environments: {
+    getAll: () => Promise<Environment[]>
+    create: (data: { name: string; description: string; color: string; icon: string }) => Promise<Environment>
+    update: (data: Environment) => Promise<Environment>
+    delete: (id: string) => Promise<{ deleted: boolean; repoIds: string[]; releaseIds: string[]; branchIds: string[] }>
+  }
+
+  settings: {
+    get: () => Promise<AppSettings>
+    update: (data: Partial<AppSettings>) => Promise<AppSettings>
+  }
+
   repositories: {
-    getAll: () => Promise<Repository[]>
-    create: (data: { name: string; folderPath: string }) => Promise<Repository>
+    getAll: (environmentId?: string) => Promise<Repository[]>
+    create: (data: { name: string; folderPath: string; environmentId: string }) => Promise<Repository>
     update: (data: { id: string; name: string; folderPath: string }) => Promise<Repository>
-    delete: (id: string) => Promise<{ deleted: boolean; branchIds: string[] }>
+    delete: (id: string) => Promise<{ deleted: boolean }>
   }
 
   branches: {
@@ -82,8 +96,8 @@ interface ElectronAPI {
   }
 
   releases: {
-    getAll: () => Promise<Release[]>
-    create: (data: { name: string }) => Promise<Release>
+    getAll: (environmentId?: string) => Promise<Release[]>
+    create: (data: { name: string; environmentId: string }) => Promise<Release>
     delete: (id: string) => Promise<{ deleted: boolean }>
   }
 

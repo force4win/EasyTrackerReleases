@@ -1,21 +1,33 @@
 import { create } from 'zustand'
-import type { Repository, Branch, Connection, Release, ReleaseRepository } from '../types/models'
+import type { Repository, Branch, Connection, Release, ReleaseRepository, Environment } from '../types/models'
 
 interface AppState {
   // Data State
+  environments: Environment[]
   repositories: Repository[]
   branches: Branch[]
   connections: Connection[]
   releases: Release[]
   releaseRepositories: ReleaseRepository[]
-  
+
   // Active Selections
+  activeEnvironmentId: string | null
   activeRepositoryId: string | null
   activeReleaseId: string | null
-  
+
   // Loading & Error States
   loading: boolean
   error: string | null
+
+  // Actions - App Init
+  initializeApp: () => Promise<void>
+
+  // Actions - Environments
+  fetchEnvironments: () => Promise<void>
+  createEnvironment: (data: Omit<Environment, 'id' | 'createdAt'>) => Promise<Environment | null>
+  updateEnvironment: (env: Environment) => Promise<void>
+  deleteEnvironment: (id: string) => Promise<void>
+  setActiveEnvironmentId: (id: string) => Promise<void>
 
   // Actions - Global Data
   fetchAllData: () => Promise<void>
@@ -54,25 +66,147 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
+  environments: [],
   repositories: [],
   branches: [],
   connections: [],
   releases: [],
   releaseRepositories: [],
+  activeEnvironmentId: null,
   activeRepositoryId: null,
   activeReleaseId: null,
   loading: false,
   error: null,
 
+  // ==============================
+  // App Init
+  // ==============================
+  initializeApp: async () => {
+    set({ loading: true, error: null })
+    try {
+      const [environments, settings] = await Promise.all([
+        window.electronAPI.environments.getAll(),
+        window.electronAPI.settings.get(),
+      ])
+
+      // Determinar ambiente activo
+      let activeId = settings.lastActiveEnvironmentId
+      if (!activeId && environments.length > 0) {
+        activeId = environments[0]?.id ?? null
+      }
+
+      set({ environments, activeEnvironmentId: activeId, loading: false })
+
+      // Cargar repos y releases del ambiente activo
+      if (activeId) {
+        await get().fetchAllData()
+      }
+    } catch (err: any) {
+      set({ error: err.message || 'Error al inicializar la app', loading: false })
+    }
+  },
+
+  // ==============================
+  // Environments
+  // ==============================
+  fetchEnvironments: async () => {
+    try {
+      const environments = await window.electronAPI.environments.getAll()
+      set({ environments })
+    } catch (err: any) {
+      set({ error: err.message || 'Error al obtener ambientes' })
+    }
+  },
+
+  createEnvironment: async (data) => {
+    set({ loading: true, error: null })
+    try {
+      const env = await window.electronAPI.environments.create(data)
+      set(state => ({ environments: [...state.environments, env], loading: false }))
+
+      // Si es el primer ambiente, activarlo automáticamente
+      if (get().activeEnvironmentId === null) {
+        await get().setActiveEnvironmentId(env.id)
+      }
+
+      return env
+    } catch (err: any) {
+      set({ error: err.message || 'Error al crear ambiente', loading: false })
+      return null
+    }
+  },
+
+  updateEnvironment: async (env) => {
+    try {
+      const updated = await window.electronAPI.environments.update(env)
+      set(state => ({
+        environments: state.environments.map(e => e.id === env.id ? updated : e),
+      }))
+    } catch (err: any) {
+      set({ error: err.message || 'Error al actualizar ambiente' })
+    }
+  },
+
+  deleteEnvironment: async (id) => {
+    set({ loading: true, error: null })
+    try {
+      await window.electronAPI.environments.delete(id)
+      const state = get()
+      const remaining = state.environments.filter(e => e.id !== id)
+
+      set({
+        environments: remaining,
+        loading: false,
+      })
+
+      // Si se eliminó el ambiente activo, cambiar al primero disponible
+      if (state.activeEnvironmentId === id) {
+        if (remaining.length > 0) {
+          await get().setActiveEnvironmentId(remaining[0]?.id ?? '')
+        } else {
+          set({
+            activeEnvironmentId: null,
+            repositories: [],
+            releases: [],
+            branches: [],
+            connections: [],
+            releaseRepositories: [],
+            activeRepositoryId: null,
+            activeReleaseId: null,
+          })
+        }
+      }
+    } catch (err: any) {
+      set({ error: err.message || 'Error al eliminar ambiente', loading: false })
+    }
+  },
+
+  setActiveEnvironmentId: async (id) => {
+    set({
+      activeEnvironmentId: id,
+      activeRepositoryId: null,
+      activeReleaseId: null,
+      branches: [],
+      connections: [],
+    })
+    // Persistir en settings
+    await window.electronAPI.settings.update({ lastActiveEnvironmentId: id })
+    // Recargar datos del nuevo ambiente
+    await get().fetchAllData()
+  },
+
+  // ==============================
   // Global Data
+  // ==============================
   fetchAllData: async () => {
+    const { activeEnvironmentId } = get()
     set({ loading: true, error: null })
     try {
       const [repositories, branches, connections, releases, releaseRepositories] = await Promise.all([
-        window.electronAPI.repositories.getAll(),
+        window.electronAPI.repositories.getAll(activeEnvironmentId ?? undefined),
         window.electronAPI.branches.getAll(),
         window.electronAPI.connections.getAll(),
-        window.electronAPI.releases.getAll(),
+        window.electronAPI.releases.getAll(activeEnvironmentId ?? undefined),
         window.electronAPI.releaseRepos.getAll(),
       ])
       set({ repositories, branches, connections, releases, releaseRepositories, loading: false })
@@ -99,11 +233,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  // ==============================
   // Repositories
+  // ==============================
   fetchRepositories: async () => {
+    const { activeEnvironmentId } = get()
     set({ loading: true, error: null })
     try {
-      const repositories = await window.electronAPI.repositories.getAll()
+      const repositories = await window.electronAPI.repositories.getAll(activeEnvironmentId ?? undefined)
       set({ repositories, loading: false })
     } catch (err: any) {
       set({ error: err.message || 'Error al obtener repositorios', loading: false })
@@ -111,9 +248,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   createRepository: async (name, folderPath) => {
+    const { activeEnvironmentId } = get()
+    if (!activeEnvironmentId) {
+      set({ error: 'Debes seleccionar un ambiente antes de crear un repositorio' })
+      return null
+    }
     set({ loading: true, error: null })
     try {
-      const repo = await window.electronAPI.repositories.create({ name, folderPath })
+      const repo = await window.electronAPI.repositories.create({ name, folderPath, environmentId: activeEnvironmentId })
       set(state => ({ repositories: [...state.repositories, repo], loading: false }))
       return repo
     } catch (err: any) {
@@ -159,7 +301,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  // ==============================
   // Branches
+  // ==============================
   fetchBranches: async repositoryId => {
     try {
       const branches = await window.electronAPI.branches.getByRepository(repositoryId)
@@ -203,7 +347,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  // ==============================
   // Connections
+  // ==============================
   fetchConnections: async repositoryId => {
     try {
       const connections = await window.electronAPI.connections.getByRepository(repositoryId)
@@ -246,11 +392,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  // ==============================
   // Releases
+  // ==============================
   fetchReleases: async () => {
+    const { activeEnvironmentId } = get()
     set({ loading: true, error: null })
     try {
-      const releases = await window.electronAPI.releases.getAll()
+      const releases = await window.electronAPI.releases.getAll(activeEnvironmentId ?? undefined)
       set({ releases, loading: false })
     } catch (err: any) {
       set({ error: err.message || 'Error al obtener releases', loading: false })
@@ -258,9 +407,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   createRelease: async name => {
+    const { activeEnvironmentId } = get()
+    if (!activeEnvironmentId) {
+      set({ error: 'Debes seleccionar un ambiente antes de crear un release' })
+      return null
+    }
     set({ loading: true, error: null })
     try {
-      const release = await window.electronAPI.releases.create({ name })
+      const release = await window.electronAPI.releases.create({ name, environmentId: activeEnvironmentId })
       set(state => ({ releases: [...state.releases, release], loading: false }))
       return release
     } catch (err: any) {
@@ -288,13 +442,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     get().fetchReleaseRepositories(id || undefined)
   },
 
+  // ==============================
   // Release Repositories
+  // ==============================
   fetchReleaseRepositories: async (releaseId?: string) => {
     try {
       if (releaseId) {
         const rrs = await window.electronAPI.releaseRepos.getByRelease(releaseId)
         set(state => {
-          // Actualizar / fusionar los releaseRepositories de este release dentro de la lista global
           const otherRrs = state.releaseRepositories.filter(rr => rr.releaseId !== releaseId)
           return { releaseRepositories: [...otherRrs, ...rrs] }
         })

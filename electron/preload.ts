@@ -31,10 +31,28 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
   },
 
+  // Environments
+  environments: {
+    getAll: () => ipcRenderer.invoke('environments:getAll'),
+    create: (data: { name: string; description: string; color: string; icon: string }) =>
+      ipcRenderer.invoke('environments:create', data),
+    update: (data: { id: string; name: string; description: string; color: string; icon: string; createdAt: string }) =>
+      ipcRenderer.invoke('environments:update', data),
+    delete: (id: string) =>
+      ipcRenderer.invoke('environments:delete', id),
+  },
+
+  // Settings
+  settings: {
+    get: () => ipcRenderer.invoke('settings:get'),
+    update: (data: { lastActiveEnvironmentId?: string | null }) =>
+      ipcRenderer.invoke('settings:update', data),
+  },
+
   // Repositories
   repositories: {
-    getAll: () => ipcRenderer.invoke('repositories:getAll'),
-    create: (data: { name: string; folderPath: string }) =>
+    getAll: (environmentId?: string) => ipcRenderer.invoke('repositories:getAll', environmentId),
+    create: (data: { name: string; folderPath: string; environmentId: string }) =>
       ipcRenderer.invoke('repositories:create', data),
     update: (data: { id: string; name: string; folderPath: string }) =>
       ipcRenderer.invoke('repositories:update', data),
@@ -90,8 +108,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Releases
   releases: {
-    getAll: () => ipcRenderer.invoke('releases:getAll'),
-    create: (data: { name: string }) =>
+    getAll: (environmentId?: string) => ipcRenderer.invoke('releases:getAll', environmentId),
+    create: (data: { name: string; environmentId: string }) =>
       ipcRenderer.invoke('releases:create', data),
     delete: (id: string) =>
       ipcRenderer.invoke('releases:delete', id),

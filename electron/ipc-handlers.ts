@@ -4,10 +4,10 @@
  */
 import { ipcMain, dialog, BrowserWindow } from 'electron'
 import { v4 as uuid } from 'uuid'
-import { getDB, updateCollection } from './database'
+import { getDB, setDB, updateCollection } from './database'
 import { getGitBranches, validateGitRepoState } from './git-service'
 import { executeGitScript } from './script-runner'
-import type { Repository, Branch, Connection, Release, ReleaseRepository } from '../src/types/models'
+import type { Repository, Branch, Connection, Release, ReleaseRepository, Environment, AppSettings } from '../src/types/models'
 
 // ==============================
 // GIT & SCRIPT OPERATIONS
@@ -45,18 +45,100 @@ ipcMain.handle('dialog:selectFolder', async () => {
 })
 
 // ==============================
+// ENVIRONMENTS
+// ==============================
+
+ipcMain.handle('environments:getAll', () => {
+  return getDB().environments
+})
+
+ipcMain.handle('environments:create', (_event, data: { name: string; description: string; color: string; icon: string }) => {
+  const newEnv: Environment = {
+    id: uuid(),
+    name: data.name,
+    description: data.description,
+    color: data.color,
+    icon: data.icon,
+    createdAt: new Date().toISOString(),
+  }
+  updateCollection('environments', envs => [...envs, newEnv])
+  return newEnv
+})
+
+ipcMain.handle('environments:update', (_event, data: Environment) => {
+  const updated = updateCollection('environments', envs =>
+    envs.map(e => e.id === data.id ? { ...e, ...data } : e)
+  )
+  return updated.find(e => e.id === data.id)
+})
+
+ipcMain.handle('environments:delete', (_event, id: string) => {
+  const db = getDB()
+
+  // Obtener repos del ambiente para hacer cascada
+  const repoIds = db.repositories.filter(r => r.environmentId === id).map(r => r.id)
+  const releaseIds = db.releases.filter(r => r.environmentId === id).map(r => r.id)
+  const branchIds = db.branches.filter(b => repoIds.includes(b.repositoryId)).map(b => b.id)
+
+  // Eliminar en cascada
+  updateCollection('executionLogs', logs =>
+    logs.filter(l => !repoIds.includes(l.repositoryId))
+  )
+  updateCollection('releaseRepositories', rrs =>
+    rrs.filter(rr => !repoIds.includes(rr.repositoryId) && !releaseIds.includes(rr.releaseId))
+  )
+  updateCollection('connections', conns =>
+    conns.filter(c => !repoIds.includes(c.repositoryId))
+  )
+  updateCollection('branches', branches =>
+    branches.filter(b => !repoIds.includes(b.repositoryId))
+  )
+  updateCollection('releases', releases =>
+    releases.filter(r => r.environmentId !== id)
+  )
+  updateCollection('repositories', repos =>
+    repos.filter(r => r.environmentId !== id)
+  )
+  updateCollection('environments', envs =>
+    envs.filter(e => e.id !== id)
+  )
+
+  return { deleted: true, repoIds, releaseIds, branchIds }
+})
+
+// ==============================
+// SETTINGS
+// ==============================
+
+ipcMain.handle('settings:get', () => {
+  return getDB().settings
+})
+
+ipcMain.handle('settings:update', (_event, data: Partial<AppSettings>) => {
+  const db = getDB()
+  const newSettings: AppSettings = { ...db.settings, ...data }
+  setDB({ ...db, settings: newSettings })
+  return newSettings
+})
+
+// ==============================
 // REPOSITORIES
 // ==============================
 
-ipcMain.handle('repositories:getAll', () => {
-  return getDB().repositories
+ipcMain.handle('repositories:getAll', (_event, environmentId?: string) => {
+  const repos = getDB().repositories
+  if (environmentId) {
+    return repos.filter(r => r.environmentId === environmentId)
+  }
+  return repos
 })
 
-ipcMain.handle('repositories:create', (_event, data: { name: string; folderPath: string }) => {
+ipcMain.handle('repositories:create', (_event, data: { name: string; folderPath: string; environmentId: string }) => {
   const newRepo: Repository = {
     id: uuid(),
     name: data.name,
     folderPath: data.folderPath,
+    environmentId: data.environmentId,
     createdAt: new Date().toISOString(),
   }
   updateCollection('repositories', repos => [...repos, newRepo])
@@ -72,9 +154,6 @@ ipcMain.handle('repositories:update', (_event, data: { id: string; name: string;
 
 ipcMain.handle('repositories:delete', (_event, id: string) => {
   // Eliminar en cascada: branches, connections, releaseRepositories relacionados
-  const db = getDB()
-  const branchIds = db.branches.filter(b => b.repositoryId === id).map(b => b.id)
-
   updateCollection('connections', conns =>
     conns.filter(c => c.repositoryId !== id)
   )
@@ -88,7 +167,7 @@ ipcMain.handle('repositories:delete', (_event, id: string) => {
     repos.filter(r => r.id !== id)
   )
 
-  return { deleted: true, branchIds }
+  return { deleted: true }
 })
 
 // ==============================
@@ -167,14 +246,19 @@ ipcMain.handle('connections:delete', (_event, id: string) => {
 // RELEASES
 // ==============================
 
-ipcMain.handle('releases:getAll', () => {
-  return getDB().releases
+ipcMain.handle('releases:getAll', (_event, environmentId?: string) => {
+  const releases = getDB().releases
+  if (environmentId) {
+    return releases.filter(r => r.environmentId === environmentId)
+  }
+  return releases
 })
 
-ipcMain.handle('releases:create', (_event, data: { name: string }) => {
+ipcMain.handle('releases:create', (_event, data: { name: string; environmentId: string }) => {
   const newRelease: Release = {
     id: uuid(),
     name: data.name,
+    environmentId: data.environmentId,
     createdAt: new Date().toISOString(),
   }
   updateCollection('releases', releases => [...releases, newRelease])
