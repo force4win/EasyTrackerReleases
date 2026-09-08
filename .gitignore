@@ -45,3 +45,4 @@ Desktop.ini
 # Testing & Coverage
 coverage/
 .nyc_output/
+/release-builds
