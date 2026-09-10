@@ -37,7 +37,8 @@ git branch -D ${targetName}_merge
 git checkout -b ${targetName}_merge
 git merge ${sourceName}
 git checkout ${targetName}
-git merge ${targetName}_merge`
+git merge ${targetName}_merge
+git push `
 }
 
 export function BranchCanvas({ repository, onOpenConsole }: BranchCanvasProps) {
